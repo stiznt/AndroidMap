@@ -2,72 +2,56 @@ package ru.stiznt.mapinkotlin
 
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import ovh.plrapps.mapview.MapView
-import ovh.plrapps.mapview.MapViewConfiguration
-import ovh.plrapps.mapview.ReferentialData
-import ovh.plrapps.mapview.ReferentialListener
 import ovh.plrapps.mapview.api.setAngle
-import ovh.plrapps.mapview.core.TileStreamProvider
-import java.io.InputStream
-import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
 
-    private var newScale = 0f
-    private var levelCount = 2
-    private var maxScale = 2f
+    private var mapView : MapView ?= null
+    private var zoomInButton  : Button ?= null
+    private var zoomOutButton : Button ?= null
+    private var compassButton : ImageButton ?= null
+    private var presenter : MainPresenter ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //presenter init
+        presenter = MainPresenter(this)
 
-        val mapView = findViewById<MapView>(R.id.mapView)
-        val tileStreamProvider =  object : TileStreamProvider {
-            override fun getTileStream(row: Int, col: Int, zoomLvl: Int): InputStream? {
-                return try {
-                    assets?.open("tiles/$zoomLvl/$row/$col.jpg")
-                } catch (e: Exception) {
-                    null
-                }
-            }
-        }
+        //activity components init
+        mapView = findViewById<MapView>(R.id.mapView)
+        zoomInButton = findViewById<Button>(R.id.button_zoom_in)
+        zoomOutButton = findViewById<Button>(R.id.button_zoom_out)
+        compassButton = findViewById<ImageButton>(R.id.button_compass)
 
-        val config = MapViewConfiguration(levelCount,1980,1080,1024,tileStreamProvider).setMaxScale(maxScale).setStartScale(0f).enableRotation()
-        mapView.configure(config)
+        //set configuration to mapView
+        mapView?.configure(presenter!!.generateConfig())
 
-        val zoomInButton = findViewById<Button>(R.id.button_zoom_in)
-        val zoomOutButton = findViewById<Button>(R.id.button_zoom_out)
-        val compassButton = findViewById<ImageButton>(R.id.button_compass)
+        //add referentialListener to mapView
+        mapView?.addReferentialListener(presenter!!)
 
-        val refOwner = object : ReferentialListener {
-            override fun onReferentialChanged(refData: ReferentialData) {
-                compassButton.rotation = refData.angle - 45f
-            }
-        }
+        //set clickListener to buttons
+        compassButton?.setOnClickListener(presenter)
+        zoomInButton?.setOnClickListener(presenter)
+        zoomOutButton?.setOnClickListener(presenter)
+    }
 
-        mapView.addReferentialListener(refOwner)
-
-        Log.d("kek",  compassButton.rotation.toString())
-
-        zoomInButton.setOnClickListener{
-            newScale += maxScale/levelCount
-            if(newScale > maxScale) newScale = maxScale
-            mapView.setScaleFromCenter(newScale)
-        }
-
-        zoomOutButton.setOnClickListener{
-            newScale -= maxScale/levelCount
-            if(newScale < 0) newScale = 0f
-            mapView.setScaleFromCenter(newScale)
-        }
-        compassButton.setOnClickListener{
-            mapView.setAngle(0f)
-        }
-
+    /*Rotate map to @angle*/
+    fun rotate(angle : Float){
+        mapView?.setAngle(angle)
+        rotateCompass(angle)
+    }
+    // Rotate compassButton to @angel
+    fun rotateCompass(angle: Float){
+        compassButton?.rotation = angle - 45f
+    }
+    // Scale mapView to @scale. Value is in range 0 - 1
+    fun setScale(scale : Float){
+        mapView?.setScaleFromCenter(scale)
     }
 }
