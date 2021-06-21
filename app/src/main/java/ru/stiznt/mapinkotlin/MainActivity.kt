@@ -21,6 +21,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val mapView = findViewById<MapView>(R.id.mapView)
+        val tileStreamProvider =  object : TileStreamProvider {
+            override fun getTileStream(row: Int, col: Int, zoomLvl: Int): InputStream? {
+                return try {
+                    assets?.open("tiles/$zoomLvl/$row/$col.jpg")
+                } catch (e: Exception) {
+                    null
+                }
+            }
+        }
+        val config = MapViewConfiguration(2,1980,1080,1024,tileStreamProvider)
+        mapView.configure(config)
+
 
     }
 }
