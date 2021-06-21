@@ -2,10 +2,15 @@ package ru.stiznt.mapinkotlin
 
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import ovh.plrapps.mapview.MapView
 import ovh.plrapps.mapview.MapViewConfiguration
+import ovh.plrapps.mapview.ReferentialData
+import ovh.plrapps.mapview.ReferentialListener
+import ovh.plrapps.mapview.api.setAngle
 import ovh.plrapps.mapview.core.TileStreamProvider
 import java.io.InputStream
 import java.lang.Exception
@@ -14,6 +19,8 @@ import java.lang.Exception
 class MainActivity : AppCompatActivity() {
 
     private var newScale = 0f
+    private var levelCount = 2
+    private var maxScale = 2f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,15 +36,37 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        val config = MapViewConfiguration(2,1980,1080,1024,tileStreamProvider).setMaxScale(2f).setStartScale(0f)
+
+        val config = MapViewConfiguration(levelCount,1980,1080,1024,tileStreamProvider).setMaxScale(maxScale).setStartScale(0f).enableRotation()
         mapView.configure(config)
 
-        val button = findViewById<Button>(R.id.scale_up)
+        val zoomInButton = findViewById<Button>(R.id.button_zoom_in)
+        val zoomOutButton = findViewById<Button>(R.id.button_zoom_out)
+        val compassButton = findViewById<ImageButton>(R.id.button_compass)
 
-        button.setOnClickListener {
-            if(newScale == 2f) newScale = 0f
-            newScale += 0.5f
+        val refOwner = object : ReferentialListener {
+            override fun onReferentialChanged(refData: ReferentialData) {
+                compassButton.rotation = refData.angle - 45f
+            }
+        }
+
+        mapView.addReferentialListener(refOwner)
+
+        Log.d("kek",  compassButton.rotation.toString())
+
+        zoomInButton.setOnClickListener{
+            newScale += maxScale/levelCount
+            if(newScale > maxScale) newScale = maxScale
             mapView.setScaleFromCenter(newScale)
+        }
+
+        zoomOutButton.setOnClickListener{
+            newScale -= maxScale/levelCount
+            if(newScale < 0) newScale = 0f
+            mapView.setScaleFromCenter(newScale)
+        }
+        compassButton.setOnClickListener{
+            mapView.setAngle(0f)
         }
 
     }
