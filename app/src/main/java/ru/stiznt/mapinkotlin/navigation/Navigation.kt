@@ -66,4 +66,11 @@ class Navigation {
         map.loadFromString(json)
     }
 
+    fun toDotList(list : ArrayList<Int>) : ArrayList<Map.Dot>{
+        var kek = ArrayList<Map.Dot>()
+        for(i in list) kek.add(map.getDot(i))
+
+        return kek
+    }
+
 }

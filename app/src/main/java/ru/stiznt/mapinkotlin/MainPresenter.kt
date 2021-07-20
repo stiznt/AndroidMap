@@ -1,11 +1,15 @@
 package ru.stiznt.mapinkotlin
 
+import android.graphics.Paint
 import android.util.Log
 import android.view.View
 import ovh.plrapps.mapview.MapViewConfiguration
 import ovh.plrapps.mapview.ReferentialData
 import ovh.plrapps.mapview.ReferentialListener
 import ovh.plrapps.mapview.core.TileStreamProvider
+import ovh.plrapps.mapview.paths.PathPoint
+import ovh.plrapps.mapview.paths.PathView
+import ovh.plrapps.mapview.paths.toFloatArray
 import ru.stiznt.mapinkotlin.navigation.Navigation
 import java.io.InputStream
 
@@ -24,14 +28,7 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
         nav = Navigation()
         var json = activity.assets?.open("map.json")?.reader().use { it?.readText() }
         nav.loadMapFromJson(json!!)
-        var kek = nav.path(2, 27)
 
-        if(kek != null){
-
-            for(i in kek){
-                Log.d("test", i.toString())
-            }
-        }
     }
 
     //When MapView is change, this method set changed parameters
@@ -52,6 +49,17 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     //compass button click logic
     private fun mapCentre(){
         activity.rotate(0f)
+        var kek = nav.path(2, 27)
+
+        if(kek != null){
+
+            val pathList = ArrayList<PathPoint>()
+            var lol = nav.toDotList(kek)
+            for(item in lol){
+                pathList.add(PathPoint(item.getX().toDouble(), item.getY().toDouble()))
+            }
+            activity.updatePaths(pathList)
+        }
     }
 
     //zoomIn button click logic

@@ -1,12 +1,17 @@
 package ru.stiznt.mapinkotlin
 
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import ovh.plrapps.mapview.MapView
 import ovh.plrapps.mapview.api.setAngle
+import ovh.plrapps.mapview.paths.PathPoint
+import ovh.plrapps.mapview.paths.PathView
+import ovh.plrapps.mapview.paths.addPathView
+import ovh.plrapps.mapview.paths.toFloatArray
 
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private var zoomOutButton : Button ?= null
     private var compassButton : ImageButton ?= null
     private var presenter : MainPresenter ?= null
+    private var pathView : PathView?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +37,13 @@ class MainActivity : AppCompatActivity() {
 
         //set configuration to mapView
         mapView?.configure(presenter!!.generateConfig())
+
+        //set coordinates maxmimum and minimum
+        mapView?.defineBounds(0.0,0.0,1.0,1.0)
+
+        //pathView init
+        pathView = PathView(mapView!!.context)
+        mapView?.addPathView(pathView!!)
 
         //add referentialListener to mapView
         mapView?.addReferentialListener(presenter!!)
@@ -53,5 +66,19 @@ class MainActivity : AppCompatActivity() {
     // Scale mapView to @scale. Value is in range 0 - 1
     fun setScale(scale : Float){
         mapView?.setScaleFromCenter(scale)
+    }
+    fun updatePaths(pathList : List<PathPoint>){
+        var path = pathList.toFloatArray(mapView!!)
+        var paths = ArrayList<FloatArray>()
+        paths.add(path!!)
+        var drawpath = paths.map {
+            object : PathView.DrawablePath {
+                override val visible: Boolean = true
+                override var path: FloatArray = it
+                override var paint: Paint? = null
+                override val width: Float? = null
+            }
+        }
+        pathView?.updatePaths(drawpath)
     }
 }
