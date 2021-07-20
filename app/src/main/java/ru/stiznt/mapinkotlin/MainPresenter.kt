@@ -6,11 +6,8 @@ import ovh.plrapps.mapview.MapViewConfiguration
 import ovh.plrapps.mapview.ReferentialData
 import ovh.plrapps.mapview.ReferentialListener
 import ovh.plrapps.mapview.core.TileStreamProvider
-import ru.stiznt.mapinkotlin.navigation.Map
-import java.io.FileReader
+import ru.stiznt.mapinkotlin.navigation.Navigation
 import java.io.InputStream
-import java.nio.charset.Charset
-import kotlin.text.Charsets.UTF_8
 
 class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialListener, TileStreamProvider {
 
@@ -20,13 +17,21 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     private var newScale = 0f
     private var levelCount = 2
     private var maxScale = 2f
-    private var map : Map ?= null
+    private var nav : Navigation
 
     init {
         this.activity = activity
-        map = Map()
+        nav = Navigation()
         var json = activity.assets?.open("map.json")?.reader().use { it?.readText() }
-        map!!.loadFromString(json!!)
+        nav.loadMapFromJson(json!!)
+        var kek = nav.path(2, 27)
+
+        if(kek != null){
+
+            for(i in kek){
+                Log.d("test", i.toString())
+            }
+        }
     }
 
     //When MapView is change, this method set changed parameters
