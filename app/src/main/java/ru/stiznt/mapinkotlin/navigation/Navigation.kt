@@ -11,7 +11,7 @@ class Navigation {
         map = Map()
     }
 
-    fun path(start : Int, finish :Int) : ArrayList<Int>? {
+    fun path(start : Int, finish :Int) : FloatArray? {
        var que = ArrayList<Map.Dot>()
         map.getDot(start).setG(0f)
         map.getDot(start).setH(map.dist(start, finish))
@@ -50,7 +50,7 @@ class Navigation {
         return null
     }
 
-    fun reconstructPath(finish : Int) : ArrayList<Int>? {
+    fun reconstructPath(finish : Int) : FloatArray? {
         var path = ArrayList<Int>()
         path.add(finish)
         var from = map.getDot(finish).getFromId()
@@ -59,7 +59,33 @@ class Navigation {
             from = map.getDot(from).getFromId()
         }
         path.reverse()
-        return path
+
+        var init = true
+        var size = path.size * 4 - 4
+        var i = 0
+        var dot = 0
+
+        var lines = FloatArray(size)
+
+        while(i < size){
+            if(init){
+                lines[i] = map.getDot(path[dot]).getX()
+                lines[i+1] = map.getDot(path[dot]).getY()
+                init = false
+                i += 2
+                dot++
+            }else{
+                lines[i] = map.getDot(path[dot]).getX()
+                lines[i+1] = map.getDot(path[dot]).getY()
+                if(i + 2 >= size) break
+                lines[i + 2] = lines[i]
+                lines[i + 3] = lines[i + 1]
+                i += 4
+                dot++
+            }
+        }
+
+        return lines
     }
 
     fun loadMapFromJson(json : String){

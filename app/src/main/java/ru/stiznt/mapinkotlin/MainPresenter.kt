@@ -49,16 +49,10 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     //compass button click logic
     private fun mapCentre(){
         activity.rotate(0f)
-        var kek = nav.path(2, 27)
+        var kek = nav.path(2, 79)
 
         if(kek != null){
-
-            val pathList = ArrayList<PathPoint>()
-            var lol = nav.toDotList(kek)
-            for(item in lol){
-                pathList.add(PathPoint(item.getX().toDouble(), item.getY().toDouble()))
-            }
-            activity.updatePaths(pathList)
+            activity.updatePaths(kek)
         }
     }
 

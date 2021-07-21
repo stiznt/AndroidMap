@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         mapView?.configure(presenter!!.generateConfig())
 
         //set coordinates maxmimum and minimum
-        mapView?.defineBounds(0.0,0.0,1.0,1.0)
+        //mapView?.defineBounds(0.0,0.0,1.0,1.0)
 
         //pathView init
         pathView = PathView(mapView!!.context)
@@ -67,11 +67,10 @@ class MainActivity : AppCompatActivity() {
     fun setScale(scale : Float){
         mapView?.setScaleFromCenter(scale)
     }
-    fun updatePaths(pathList : List<PathPoint>){
-        var path = pathList.toFloatArray(mapView!!)
-        var paths = ArrayList<FloatArray>()
-        paths.add(path!!)
-        var drawpath = paths.map {
+    fun updatePaths(pathList : FloatArray){
+        var kek = ArrayList<FloatArray>()
+        kek.add(pathList)
+        var drawpath = kek.map {
             object : PathView.DrawablePath {
                 override val visible: Boolean = true
                 override var path: FloatArray = it
