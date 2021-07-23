@@ -1,6 +1,7 @@
 package ru.stiznt.mapinkotlin
 
 
+import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.widget.Button
@@ -69,15 +70,19 @@ class MainActivity : AppCompatActivity() {
     fun setScale(scale : Float){
         mapView?.setScaleFromCenter(scale)
     }
+
     fun updatePaths(pathList : FloatArray){
+        var paint = Paint()
+        paint.color = Color.GREEN
+        paint.strokeCap = Paint.Cap.ROUND
         var kek = ArrayList<FloatArray>()
         kek.add(pathList)
         var drawpath = kek.map {
             object : PathView.DrawablePath {
                 override val visible: Boolean = true
                 override var path: FloatArray = it
-                override var paint: Paint? = null
-                override val width: Float? = null
+                override var paint: Paint? = paint
+                override val width: Float? = 20f
             }
         }
         pathView?.updatePaths(drawpath)
