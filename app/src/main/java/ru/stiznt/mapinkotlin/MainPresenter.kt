@@ -1,5 +1,6 @@
 package ru.stiznt.mapinkotlin
 
+import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
 import android.view.View
@@ -23,13 +24,18 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     private var levelCount = 4
     private var maxScale = 4f
     private var nav : Navigation
+    private var Path : FloatArray ?= null
+    private var p = Paint()
+    private var widthMax = 50f
+    private var widthMin = 10f
 
     init {
         this.activity = activity
         nav = Navigation()
         var json = activity.assets?.open("map.json")?.reader().use { it?.readText() }
         nav.loadMapFromJson(json!!)
-
+        p.color = Color.GREEN
+        p.strokeCap = Paint.Cap.ROUND
     }
 
     //When MapView is change, this method set changed parameters
@@ -51,9 +57,15 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     private fun mapCentre(){
         activity.rotate(0f)
         var kek = nav.path(2, 79)
-
+        Path = kek
         if(kek != null){
-            activity.updatePaths(kek)
+            var drawablePath = object : PathView.DrawablePath {
+                override val visible: Boolean = true
+                override var path: FloatArray = kek
+                override var paint: Paint? = p
+                override val width: Float? = widthMin + (widthMax-widthMin)/maxScale*newScale
+            }
+            activity.updatePaths(drawablePath)
         }else{
             activity.showText("Can't find path");
         }
@@ -64,8 +76,15 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
         newScale += maxScale/levelCount
         if(newScale > maxScale) newScale = maxScale
         activity.setScale(newScale)
-
-        this.onReferentialChanged(refData!!)
+        if(Path != null){
+            var drawablePath = object : PathView.DrawablePath {
+                override val visible: Boolean = true
+                override var path: FloatArray = Path as FloatArray
+                override var paint: Paint? = p
+                override val width: Float? = widthMin + (widthMax-widthMin)/maxScale*newScale
+            }
+            activity?.updatePaths(drawablePath)
+        }
     }
 
     //zoomOut button click logic
@@ -73,6 +92,15 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
         newScale -= maxScale/levelCount
         if(newScale < 0) newScale = 0f
         activity.setScale(newScale)
+        if(Path != null){
+            var drawablePath = object : PathView.DrawablePath {
+                override val visible: Boolean = true
+                override var path: FloatArray = Path as FloatArray
+                override var paint: Paint? = p
+                override val width: Float? = widthMin + (widthMax-widthMin)/maxScale*newScale
+            }
+            activity?.updatePaths(drawablePath)
+        }
     }
 
     //generate MapViewConfiguration and set some properties

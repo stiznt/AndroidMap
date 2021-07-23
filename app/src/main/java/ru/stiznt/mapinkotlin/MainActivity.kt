@@ -71,21 +71,8 @@ class MainActivity : AppCompatActivity() {
         mapView?.setScaleFromCenter(scale)
     }
 
-    fun updatePaths(pathList : FloatArray){
-        var paint = Paint()
-        paint.color = Color.GREEN
-        paint.strokeCap = Paint.Cap.ROUND
-        var kek = ArrayList<FloatArray>()
-        kek.add(pathList)
-        var drawpath = kek.map {
-            object : PathView.DrawablePath {
-                override val visible: Boolean = true
-                override var path: FloatArray = it
-                override var paint: Paint? = paint
-                override val width: Float? = 50f
-            }
-        }
-        pathView?.updatePaths(drawpath)
+    fun updatePaths(path : PathView.DrawablePath){
+        pathView?.updatePaths(listOf(path))
     }
 
     fun showText(text : String){
