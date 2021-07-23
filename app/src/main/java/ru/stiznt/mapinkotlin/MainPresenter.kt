@@ -12,6 +12,7 @@ import ovh.plrapps.mapview.paths.PathView
 import ovh.plrapps.mapview.paths.toFloatArray
 import ru.stiznt.mapinkotlin.navigation.Navigation
 import java.io.InputStream
+import java.lang.Exception
 
 class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialListener, TileStreamProvider {
 
@@ -19,8 +20,8 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     private var refData : ReferentialData ?= null
 
     private var newScale = 0f
-    private var levelCount = 2
-    private var maxScale = 2f
+    private var levelCount = 4
+    private var maxScale = 4f
     private var nav : Navigation
 
     init {
@@ -76,11 +77,15 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
 
     //generate MapViewConfiguration and set some properties
     fun generateConfig() : MapViewConfiguration{
-        return MapViewConfiguration(levelCount, 1980,1080,1024,this).setMaxScale(maxScale).enableRotation().setStartScale(0f)
+        return MapViewConfiguration(levelCount, 1980,1080,256,this).setMaxScale(maxScale).enableRotation().setStartScale(0f)
     }
 
     //get tile from it's row, col and zoomLvl
     override fun getTileStream(row: Int, col: Int, zoomLvl: Int): InputStream? {
-        return activity.assets?.open("tiles/$zoomLvl/$row/$col.jpg")
+        try {
+            return activity.assets?.open("tiles/$zoomLvl/$row/$col.jpg")
+        }catch (e : Exception){
+            return activity.assets?.open("tiles/blank.jpg")
+        }
     }
 }

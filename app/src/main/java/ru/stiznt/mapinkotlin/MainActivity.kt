@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                 override val visible: Boolean = true
                 override var path: FloatArray = it
                 override var paint: Paint? = paint
-                override val width: Float? = 20f
+                override val width: Float? = 50f
             }
         }
         pathView?.updatePaths(drawpath)
