@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ovh.plrapps.mapview.MapView
 import ovh.plrapps.mapview.api.setAngle
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         //presenter init
         presenter = MainPresenter(this)
 
@@ -79,5 +81,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         pathView?.updatePaths(drawpath)
+    }
+
+    fun showText(text : String){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT)
     }
 }

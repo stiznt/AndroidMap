@@ -53,6 +53,8 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
 
         if(kek != null){
             activity.updatePaths(kek)
+        }else{
+            activity.showText("Can't find path");
         }
     }
 
@@ -61,6 +63,8 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
         newScale += maxScale/levelCount
         if(newScale > maxScale) newScale = maxScale
         activity.setScale(newScale)
+
+        this.onReferentialChanged(refData!!)
     }
 
     //zoomOut button click logic
