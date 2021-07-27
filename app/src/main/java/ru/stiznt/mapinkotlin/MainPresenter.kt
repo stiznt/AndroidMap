@@ -2,6 +2,7 @@ package ru.stiznt.mapinkotlin
 
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import ovh.plrapps.mapview.MapViewConfiguration
@@ -21,12 +22,13 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     private var refData : ReferentialData ?= null
 
     private var newScale = 0f
+    private var showPath = false;
     private var levelCount = 4
     private var maxScale = 4f
+    private var minScale = 0.5f
     private var nav : Navigation
-    private var Path : FloatArray ?= null
     private var p = Paint()
-    private var widthMax = 50f
+    private var widthMax = 60f
     private var widthMin = 10f
 
     init {
@@ -42,6 +44,12 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     override fun onReferentialChanged(refData: ReferentialData) {
         this.refData = refData
         activity.rotateCompass(refData.angle)
+        if(minScale == null) minScale = refData.scale
+        if(refData.scale != newScale){
+            newScale = refData.scale
+            updatePath()
+        }
+
     }
 
 
@@ -56,19 +64,8 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     //compass button click logic
     private fun mapCentre(){
         activity.rotate(0f)
-        var kek = nav.path(2, 79)
-        Path = kek
-        if(kek != null){
-            var drawablePath = object : PathView.DrawablePath {
-                override val visible: Boolean = true
-                override var path: FloatArray = kek
-                override var paint: Paint? = p
-                override val width: Float? = widthMin + (widthMax-widthMin)/maxScale*newScale
-            }
-            activity.updatePaths(drawablePath)
-        }else{
-            activity.showText("Can't find path");
-        }
+        showPath = true;
+        updatePath()
     }
 
     //zoomIn button click logic
@@ -76,31 +73,15 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
         newScale += maxScale/levelCount
         if(newScale > maxScale) newScale = maxScale
         activity.setScale(newScale)
-        if(Path != null){
-            var drawablePath = object : PathView.DrawablePath {
-                override val visible: Boolean = true
-                override var path: FloatArray = Path as FloatArray
-                override var paint: Paint? = p
-                override val width: Float? = widthMin + (widthMax-widthMin)/maxScale*newScale
-            }
-            activity?.updatePaths(drawablePath)
-        }
+        updatePath()
     }
 
     //zoomOut button click logic
     private fun zoomOut(){
         newScale -= maxScale/levelCount
-        if(newScale < 0) newScale = 0f
+        if(newScale < minScale!!) newScale = minScale!!
         activity.setScale(newScale)
-        if(Path != null){
-            var drawablePath = object : PathView.DrawablePath {
-                override val visible: Boolean = true
-                override var path: FloatArray = Path as FloatArray
-                override var paint: Paint? = p
-                override val width: Float? = widthMin + (widthMax-widthMin)/maxScale*newScale
-            }
-            activity?.updatePaths(drawablePath)
-        }
+        updatePath()
     }
 
     //generate MapViewConfiguration and set some properties
@@ -115,5 +96,17 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
         }catch (e : Exception){
             return activity.assets?.open("tiles/blank.jpg")
         }
+    }
+
+    private fun updatePath(){
+        if(!showPath) return
+        var Path = nav.path(2, 79)
+        var drawablePath = object : PathView.DrawablePath {
+            override val visible: Boolean = true
+            override var path: FloatArray = Path as FloatArray
+            override var paint: Paint? = p
+            override val width: Float? = widthMin + (widthMax-widthMin)*newScale/maxScale
+        }
+        activity?.updatePaths(drawablePath)
     }
 }

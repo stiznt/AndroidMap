@@ -5,13 +5,15 @@ import kotlin.collections.ArrayList
 
 class Navigation {
 
-    private lateinit var map : Map
-
+    private var map : Map
+    private var Path : pathCash?
     init{
         map = Map()
+        Path = null
     }
 
     fun path(start : Int, finish :Int) : FloatArray? {
+        if(Path?.from == start && Path?.to == finish) return Path?.path
        var que = ArrayList<Map.Dot>()
         map.getDot(start).setG(0f)
         map.getDot(start).setH(map.dist(start, finish))
@@ -52,6 +54,7 @@ class Navigation {
 
     fun reconstructPath(finish : Int) : FloatArray? {
         var path = ArrayList<Int>()
+
         path.add(finish)
         var from = map.getDot(finish).getFromId()
         while(from != -1){
@@ -59,7 +62,6 @@ class Navigation {
             from = map.getDot(from).getFromId()
         }
         path.reverse()
-
         var init = true
         var size = path.size * 4 - 4
         var i = 0
@@ -84,7 +86,11 @@ class Navigation {
                 dot++
             }
         }
-
+        Path = object: pathCash(){
+            override var path = lines
+            override var from = path[0]
+            override var to = path[path.size-1]
+        }
         return lines
     }
 
@@ -99,4 +105,9 @@ class Navigation {
         return kek
     }
 
+    abstract class pathCash{
+        abstract var path :FloatArray
+        abstract var from :Int
+        abstract var to : Int
+    }
 }

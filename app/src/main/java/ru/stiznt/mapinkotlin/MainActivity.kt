@@ -40,9 +40,9 @@ class MainActivity : AppCompatActivity() {
 
         //set configuration to mapView
         mapView?.configure(presenter!!.generateConfig())
-
         //set coordinates maxmimum and minimum
         //mapView?.defineBounds(0.0,0.0,1.0,1.0)
+
 
         //pathView init
         pathView = PathView(mapView!!.context)
@@ -73,6 +73,10 @@ class MainActivity : AppCompatActivity() {
 
     fun updatePaths(path : PathView.DrawablePath){
         pathView?.updatePaths(listOf(path))
+    }
+
+    fun scrollTo(x : Int, y : Int){
+        mapView?.scrollTo(x, y)
     }
 
     fun showText(text : String){
