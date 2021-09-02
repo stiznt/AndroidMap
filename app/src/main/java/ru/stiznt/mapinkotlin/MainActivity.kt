@@ -1,85 +1,41 @@
 package ru.stiznt.mapinkotlin
 
-
-import android.graphics.Color
-import android.graphics.Paint
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import ovh.plrapps.mapview.MapView
-import ovh.plrapps.mapview.api.setAngle
-import ovh.plrapps.mapview.paths.PathPoint
-import ovh.plrapps.mapview.paths.PathView
-import ovh.plrapps.mapview.paths.addPathView
-import ovh.plrapps.mapview.paths.toFloatArray
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
 
-    private var mapView : MapView ?= null
-    private var zoomInButton  : Button ?= null
-    private var zoomOutButton : Button ?= null
-    private var compassButton : ImageButton ?= null
-    private var presenter : MainPresenter ?= null
-    private var pathView : PathView?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        saveText(false)
 
-        //presenter init
-        presenter = MainPresenter(this)
+        val navView = findViewById<BottomNavigationView>(R.id.nav_view)
+        supportActionBar!!.hide()
+        val appBarConfiguration: AppBarConfiguration = AppBarConfiguration.Builder(
+            R.id.navigation_search, R.id.navigation_pos, R.id.navigation_scan, R.id.navigation_chat
+        )
+            .build()
 
-        //activity components init
-        mapView = findViewById<MapView>(R.id.mapView)
-        zoomInButton = findViewById<Button>(R.id.button_zoom_in)
-        zoomOutButton = findViewById<Button>(R.id.button_zoom_out)
-        compassButton = findViewById<ImageButton>(R.id.button_compass)
-
-        //set configuration to mapView
-        mapView?.configure(presenter!!.generateConfig())
-        //set coordinates maxmimum and minimum
-        //mapView?.defineBounds(0.0,0.0,1.0,1.0)
-
-
-        //pathView init
-        pathView = PathView(mapView!!.context)
-        mapView?.addPathView(pathView!!)
-
-        //add referentialListener to mapView
-        mapView?.addReferentialListener(presenter!!)
-
-        //set clickListener to buttons
-        compassButton?.setOnClickListener(presenter)
-        zoomInButton?.setOnClickListener(presenter)
-        zoomOutButton?.setOnClickListener(presenter)
+        val navController: NavController =
+            Navigation.findNavController(this, R.id.nav_host_fragment)
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+        NavigationUI.setupWithNavController(navView, navController)
     }
 
-    /*Rotate map to @angle*/
-    fun rotate(angle : Float){
-        mapView?.setAngle(angle)
-        rotateCompass(angle)
-    }
-    // Rotate compassButton to @angel
-    fun rotateCompass(angle: Float){
-        compassButton?.rotation = angle - 45f
-    }
-    // Scale mapView to @scale. Value is in range 0 - 1
-    fun setScale(scale : Float){
-        mapView?.setScaleFromCenter(scale)
-    }
-
-    fun updatePaths(path : PathView.DrawablePath){
-        pathView?.updatePaths(listOf(path))
-    }
-
-    fun scrollTo(x : Int, y : Int){
-        mapView?.scrollTo(x, y)
-    }
-
-    fun showText(text : String){
-        Toast.makeText(this, text, Toast.LENGTH_SHORT)
+    fun saveText(visibility: Boolean?) {
+        val sPref: SharedPreferences
+        sPref = getPreferences(MODE_PRIVATE)
+        val ed = sPref.edit()
+        ed.putBoolean("visibility", visibility!!)
+        ed.commit()
     }
 }

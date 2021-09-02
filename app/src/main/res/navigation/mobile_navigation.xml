@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_pos">
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="ru.stiznt.mapinkotlin.ui.search.SearchFragment"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigation_pos"
+        android:name="ru.stiznt.mapinkotlin.ui.pos.PosFragment"
+        tools:layout="@layout/fragment_pos" />
+
+    <fragment
+        android:id="@+id/navigation_scan"
+        android:name="ru.stiznt.mapinkotlin.ui.scan.ScanFragment"
+        tools:layout="@layout/fragment_scan" />
+
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="ru.stiznt.mapinkotlin.ui.chat.ChatFragment"
+        tools:layout="@layout/fragment_chat" />
+
+</navigation>

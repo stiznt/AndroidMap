@@ -13,12 +13,13 @@ import ovh.plrapps.mapview.paths.PathPoint
 import ovh.plrapps.mapview.paths.PathView
 import ovh.plrapps.mapview.paths.toFloatArray
 import ru.stiznt.mapinkotlin.navigation.Navigation
+import ru.stiznt.mapinkotlin.ui.pos.PosFragment
 import java.io.InputStream
 import java.lang.Exception
 
-class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialListener, TileStreamProvider {
+class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialListener, TileStreamProvider {
 
-    private val activity : MainActivity
+    private val activity : PosFragment
     private var refData : ReferentialData ?= null
 
     private var newScale = 0f
@@ -34,7 +35,7 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     init {
         this.activity = activity
         nav = Navigation()
-        var json = activity.assets?.open("map.json")?.reader().use { it?.readText() }
+        var json = activity.activity?.assets?.open("map.json")?.reader().use { it?.readText() }
         nav.loadMapFromJson(json!!)
         p.color = Color.GREEN
         p.strokeCap = Paint.Cap.ROUND
@@ -92,9 +93,9 @@ class MainPresenter(activity: MainActivity) : View.OnClickListener, ReferentialL
     //get tile from it's row, col and zoomLvl
     override fun getTileStream(row: Int, col: Int, zoomLvl: Int): InputStream? {
         try {
-            return activity.assets?.open("tiles/$zoomLvl/$row/$col.jpg")
+            return activity.activity?.assets?.open("tiles/$zoomLvl/$row/$col.jpg")
         }catch (e : Exception){
-            return activity.assets?.open("tiles/blank.jpg")
+            return activity.activity?.assets?.open("tiles/blank.jpg")
         }
     }
 

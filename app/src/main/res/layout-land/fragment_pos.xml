@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.pos.PosFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundMainFragment">
+
+        <com.example.project.scrolzoom.PhotoView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView"/>
+
+        <ImageView
+            android:id="@+id/plus"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginBottom="60dp"
+            android:alpha="0.8"
+            android:background="@drawable/plus" />
+
+        <ImageView
+            android:id="@+id/minus"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginTop="20dp"
+            android:alpha="0.8"
+            android:background="@drawable/minus" />
+
+        <ImageView
+            android:id="@+id/mest"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical|left|bottom"
+            android:layout_marginBottom="110dp"
+            android:alpha="0.8"
+            android:background="@drawable/mest"/>
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:id="@+id/fragmentNav"
+            android:name="com.example.project.ui.pos.NavFragment"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="74dp"
+            android:background="@drawable/corners_progressbar"/>
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+
+            style="?android:attr/progressBarStyleHorizontal"
+            android:theme="@style/CustomProgressBarHorizontal"
+            android:progressDrawable="@drawable/progress_bar"
+
+            android:layout_marginTop="10dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="80dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:progress="60"
+            android:max="100"
+            android:id="@+id/progress"/>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

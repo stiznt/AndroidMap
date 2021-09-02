@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#A60505</color>
+    <color name="background">#C3FFFFFF</color>
+    <color name="backgroundMainFragment">#EEEEEE</color>
+    <color name="backgroundSearchFragment">#FFFFFF</color>
+    <color name="textColorChat">#010101</color>
+    <color name="blueLine">#0070FF</color>
+    <color name="greenView">#a5c734</color>
+    <color name="whiteView">#f2f3f5</color>
+    <color name="progressBarGreen">#13dc12</color>
+    <color name="progressBarWhite">#d6d9de</color>
+
 </resources>
