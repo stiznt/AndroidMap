@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.stiznt.mapinkotlin.R
 
-
 class ScanFragment : Fragment() {
     val CODE = 3
     var root: View? = null
@@ -40,7 +39,7 @@ class ScanFragment : Fragment() {
     fun saveText(link: String?) {
         sPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
         val ed = sPref?.edit()
-        ed?.putString("SAVED_ID", link)
-        ed?.commit()
+        ed?.putInt("MY_POS", 47/*Integer.parseInt(link)*/)
+        ed?.apply()
     }
 }

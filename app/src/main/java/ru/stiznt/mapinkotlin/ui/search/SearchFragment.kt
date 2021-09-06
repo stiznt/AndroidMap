@@ -86,6 +86,7 @@ class SearchFragment : Fragment() {
         sPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val ed = sPref?.edit()
         ed?.putString("position", position.name)
+        ed?.putInt("FINISH",position.id);
         ed?.apply()
     }
 

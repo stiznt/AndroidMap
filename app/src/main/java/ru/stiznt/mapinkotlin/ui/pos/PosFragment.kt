@@ -72,7 +72,7 @@ class PosFragment : Fragment() {
         if(pos?.length!! > 2){
             position.text = pos
             navHelper?.visibility = View.VISIBLE
-            presenter?.updatePath(true)
+            presenter?.updatePath(true, sPref.getInt("MY_POS", 47), sPref.getInt("FINISH", 1))
             saveState()
         }else navHelper?.visibility = View.INVISIBLE
     }

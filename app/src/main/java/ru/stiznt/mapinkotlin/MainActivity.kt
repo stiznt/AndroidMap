@@ -83,13 +83,4 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(navView, navController)
     }
 
-    /*override fun onDestroy() {
-        super.onDestroy()
-        var sPref: SharedPreferences
-        sPref = getPreferences(Context.MODE_PRIVATE)
-        val ed = sPref?.edit()
-        ed?.putBoolean("visibility", false)
-        ed?.putString("position", "")
-        ed?.apply()
-    }*/
 }

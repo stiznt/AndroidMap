@@ -1,5 +1,7 @@
 package ru.stiznt.mapinkotlin
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
@@ -65,8 +67,8 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     //compass button click logic
     private fun mapCentre(){
         activity.rotate(0f)
-        /*showPath = true;
-        updatePath()*/
+        activity.setScale(0f)
+        updatePath()
     }
 
     //zoomIn button click logic
@@ -111,9 +113,9 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         activity?.updatePaths(drawablePath)
     }
 
-    public fun updatePath(flag : Boolean){
+    public fun updatePath(flag : Boolean, start : Int, finish : Int){
         if(!flag) return
-        var Path = nav.path(1, 130)
+        var Path = nav.path(start, finish)
         var drawablePath = object : PathView.DrawablePath {
             override val visible: Boolean = true
             override var path: FloatArray = Path as FloatArray
