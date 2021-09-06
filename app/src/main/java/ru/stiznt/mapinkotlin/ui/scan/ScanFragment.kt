@@ -40,7 +40,7 @@ class ScanFragment : Fragment() {
     fun saveText(link: String?) {
         sPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
         val ed = sPref?.edit()
-        ed?.putString("SAVED_LINK", link)
+        ed?.putString("SAVED_ID", link)
         ed?.commit()
     }
 }

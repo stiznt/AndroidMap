@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
+import ru.stiznt.mapinkotlin.Models.Cabinet;
+
 public class DBConnector{
 
     private SearchDBHelper searchDBHelper;
@@ -19,25 +21,27 @@ public class DBConnector{
         contentValues = new ContentValues();
     }
 
-    public void addDB(String command){
-        ArrayList<String> linesDB = new ArrayList<String>();
+    public void addDB(Cabinet cabinet){
+        ArrayList<Cabinet> linesDB = new ArrayList<Cabinet>();
         linesDB.addAll(readDB());
 
-        if(!linesDB.contains(command)){
-            contentValues.put(SearchDBHelper.KEY_COMMAND, command);
+        if(!linesDB.contains(cabinet)){
+            contentValues.put(SearchDBHelper.KEY_COMMAND, cabinet.getName());
+            contentValues.put(SearchDBHelper.KEY_COMMAND_ID, cabinet.getId());
             database.insert(SearchDBHelper.TABLE_CONTACTS, null, contentValues);
         }
     }
 
-    public ArrayList<String> readDB(){
-        ArrayList<String> linesDB = new ArrayList();
+    public ArrayList<Cabinet> readDB(){
+        ArrayList<Cabinet> linesDB = new ArrayList();
         Cursor cursor = database.query(SearchDBHelper.TABLE_CONTACTS, null, null,
                 null, null, null, null);
 
         if (cursor.moveToFirst()){
             int commandIndex = cursor.getColumnIndex(SearchDBHelper.KEY_COMMAND);
+            int idIndex = cursor.getColumnIndex(SearchDBHelper.KEY_COMMAND_ID);
             do {
-                linesDB.add(cursor.getString(commandIndex));
+                linesDB.add(new Cabinet(cursor.getString(commandIndex), cursor.getInt(idIndex)));
             } while (cursor.moveToNext());
         }
 

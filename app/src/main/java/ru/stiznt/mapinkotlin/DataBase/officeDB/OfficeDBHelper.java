@@ -13,7 +13,7 @@ public class OfficeDBHelper extends SQLiteOpenHelper {
     public static final String KEY_ID = "_id";
     public static final String KEY_FIO = "fio";
     public static final String KEY_CABINET = "cabinet";
-    public static final String KEY_FREE = "free";
+    public static final String KEY_CABINET_ID = "free";
 
     public OfficeDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -22,7 +22,7 @@ public class OfficeDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_CONTACTS + "(" + KEY_ID
-                + " integer primary key," + KEY_FIO + " text," + KEY_CABINET + " text," + KEY_FREE + " text"  + ")");
+                + " integer primary key," + KEY_FIO + " text," + KEY_CABINET + " text," + KEY_CABINET_ID + " integer"  + ")");
 
     }
 

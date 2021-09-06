@@ -3,8 +3,9 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="ru.stiznt.mapinkotlin">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <dist:module dist:instant="true" />
 
     <application
@@ -14,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
-
+        <activity
+            android:name=".ui.scan.QR_Scanner"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">

@@ -65,8 +65,8 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     //compass button click logic
     private fun mapCentre(){
         activity.rotate(0f)
-        showPath = true;
-        updatePath()
+        /*showPath = true;
+        updatePath()*/
     }
 
     //zoomIn button click logic
@@ -99,9 +99,21 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
     }
 
-    private fun updatePath(){
+    public fun updatePath(){
         if(!showPath) return
-        var Path = nav.path(2, 79)
+        var Path = nav.path(1, 130)
+        var drawablePath = object : PathView.DrawablePath {
+            override val visible: Boolean = true
+            override var path: FloatArray = Path as FloatArray
+            override var paint: Paint? = p
+            override val width: Float? = widthMin + (widthMax-widthMin)*newScale/maxScale
+        }
+        activity?.updatePaths(drawablePath)
+    }
+
+    public fun updatePath(flag : Boolean){
+        if(!flag) return
+        var Path = nav.path(1, 130)
         var drawablePath = object : PathView.DrawablePath {
             override val visible: Boolean = true
             override var path: FloatArray = Path as FloatArray

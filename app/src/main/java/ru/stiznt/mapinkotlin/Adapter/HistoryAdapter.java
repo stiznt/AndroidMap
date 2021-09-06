@@ -9,17 +9,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import ru.stiznt.mapinkotlin.Models.Cabinet;
 import ru.stiznt.mapinkotlin.R;
 
 import java.util.ArrayList;
 
-public class HistoryAdapter extends ArrayAdapter<String> {
+public class HistoryAdapter extends ArrayAdapter<Cabinet> {
 
     private Context mContext;
     int mResourse;
-    ArrayList<String> arraylist;
+    ArrayList<Cabinet> arraylist;
 
-    public HistoryAdapter(Context context, int resource, ArrayList<String> objects) {
+    public HistoryAdapter(Context context, int resource, ArrayList<Cabinet> objects) {
         super(context, resource, objects);
         mContext = context;
         mResourse = resource;
@@ -29,13 +30,13 @@ public class HistoryAdapter extends ArrayAdapter<String> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        String command = getItem(position);
+        Cabinet command = getItem(position);
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         convertView = layoutInflater.inflate(mResourse, parent, false);
 
         TextView textView = (TextView)convertView.findViewById(R.id.tv);
-        textView.setText(command);
+        textView.setText(command.getName());
 
         return convertView;
     }

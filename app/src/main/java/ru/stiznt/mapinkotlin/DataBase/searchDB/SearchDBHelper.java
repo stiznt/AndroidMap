@@ -12,6 +12,7 @@ public class SearchDBHelper  extends SQLiteOpenHelper {
 
     public static final String KEY_ID = "_id";
     public static final String KEY_COMMAND = "name";
+    public static final String KEY_COMMAND_ID = "free";
 
     public SearchDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -20,7 +21,7 @@ public class SearchDBHelper  extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_CONTACTS + "(" + KEY_ID
-                + " integer primary key," + KEY_COMMAND + " text" + ")");
+                + " integer primary key," + KEY_COMMAND + " text, " + KEY_COMMAND_ID + " integer" + ")");
 
     }
 
