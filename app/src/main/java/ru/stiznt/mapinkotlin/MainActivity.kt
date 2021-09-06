@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         )
             .build()
 
-        /*val db: DBConnector
+/*        val db: DBConnector
         db = DBConnector(this)
 
         db.addDB(Cabinet("Г-341",4))

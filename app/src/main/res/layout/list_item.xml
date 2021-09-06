@@ -11,6 +11,7 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:background="@drawable/history"
+        android:id="@+id/watch"
         android:layout_marginLeft="0dp"/>
 
     <TextView

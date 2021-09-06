@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import ru.stiznt.mapinkotlin.MainPresenter
 import ovh.plrapps.mapview.MapView
@@ -60,20 +57,37 @@ class PosFragment : Fragment() {
         zoomInButton?.setOnClickListener(presenter)
         zoomOutButton?.setOnClickListener(presenter)
 
+        navHelper?.setOnClickListener(View.OnClickListener {
+            navHelper?.visibility = View.INVISIBLE
+            saveState()
+            presenter?.updatePath(true, 0, 0)
+        })
+
         showNavigation()
         return root
     }
 
+    //TODO:При запуске приложения и при переходе на фрагмент без маршрута не должен появляться тост.
+    //TODO:Сделать горизонтальную разметку и тёмную тему
+    //TODO:Добавить базу для BLE
+    //TODO:Обработка ProgressBar
+
     fun showNavigation(){
         val sPref: SharedPreferences
         sPref = requireActivity().getPreferences(MODE_PRIVATE)
+        if(sPref.getInt("MY_POS", 47) == sPref.getInt("FINISH", 1)){
+            Toast.makeText(context, "Вы прибыли <3", Toast.LENGTH_SHORT).show()
+            navHelper?.visibility = View.INVISIBLE
+            saveState()
+            presenter?.updatePath(true, 0, 0)
+            saveState()
+        }
         val position = root!!.findViewById<View>(R.id.position) as TextView
         var pos = sPref.getString("position", "")
         if(pos?.length!! > 2){
             position.text = pos
             navHelper?.visibility = View.VISIBLE
             presenter?.updatePath(true, sPref.getInt("MY_POS", 47), sPref.getInt("FINISH", 1))
-            saveState()
         }else navHelper?.visibility = View.INVISIBLE
     }
 

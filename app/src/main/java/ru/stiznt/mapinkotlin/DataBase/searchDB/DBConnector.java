@@ -24,8 +24,13 @@ public class DBConnector{
     public void addDB(Cabinet cabinet){
         ArrayList<Cabinet> linesDB = new ArrayList<Cabinet>();
         linesDB.addAll(readDB());
+        boolean flag = true;
 
-        if(!linesDB.contains(cabinet)){
+        for(int i= 0 ; i < linesDB.size(); i++){
+            if(cabinet.getId() == linesDB.get(i).getId()) flag = false;
+        }
+
+        if(flag){
             contentValues.put(SearchDBHelper.KEY_COMMAND, cabinet.getName());
             contentValues.put(SearchDBHelper.KEY_COMMAND_ID, cabinet.getId());
             database.insert(SearchDBHelper.TABLE_CONTACTS, null, contentValues);

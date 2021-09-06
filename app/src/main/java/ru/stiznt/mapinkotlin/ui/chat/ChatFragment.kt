@@ -18,7 +18,6 @@ class ChatFragment : Fragment() {
     private var telega: ImageButton? = null
     private var mail: ImageButton? = null
     private var vk: ImageButton? = null
-    private var phone: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +27,6 @@ class ChatFragment : Fragment() {
         telega = root.findViewById(ru.stiznt.mapinkotlin.R.id.telega)
         mail = root.findViewById(ru.stiznt.mapinkotlin.R.id.mail)
         vk = root.findViewById(ru.stiznt.mapinkotlin.R.id.vk)
-        phone = root.findViewById(ru.stiznt.mapinkotlin.R.id.phone)
         telega!!.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 try {
@@ -56,17 +54,6 @@ class ChatFragment : Fragment() {
                 try {
                     val vk = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.me/denis_bratusev"))
                     startActivity(vk)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        })
-        phone!!.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                try {
-                    val telephone = Intent(Intent.ACTION_DIAL)
-                    telephone.data = Uri.parse("tel:89064684798")
-                    startActivity(telephone)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

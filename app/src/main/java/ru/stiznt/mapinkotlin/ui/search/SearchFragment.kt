@@ -73,8 +73,12 @@ class SearchFragment : Fragment() {
                         if (pos[i].name.toLowerCase().contains(command.toLowerCase())) filter.add(pos[i])
                     }
                     historyAdapter = HistoryAdapter(context, R.layout.list_item, filter)
+                    historyAdapter?.setInvisible()
                     listView!!.adapter = historyAdapter
-                } else onShowStory()
+                } else{
+                    historyAdapter?.setVisible()
+                    onShowStory()
+                }
             }
 
             override fun afterTextChanged(s: Editable) {}

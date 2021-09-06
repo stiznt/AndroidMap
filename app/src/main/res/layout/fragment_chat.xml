@@ -20,6 +20,7 @@
             android:textStyle="bold"
             android:textColor="@color/textColorChat"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
             android:textSize="33sp"/>
 
         <View
@@ -54,16 +55,5 @@
         android:layout_marginTop="15dp"
         android:layout_gravity="center"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+7-906-888-88-88"
-        android:layout_gravity="center"
-        android:layout_marginTop="25dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:fontFamily="@font/font_verdana"
-        android:id="@+id/phone"
-        android:textSize="25sp"/>
 
 </LinearLayout>

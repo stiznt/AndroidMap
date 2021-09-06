@@ -29,17 +29,17 @@ class ScanFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == 3) {
             val link = data!!.getStringExtra("link")
-            saveText(link)
+            saveText(Integer.parseInt(link))
         }
         val bottomNavigationView =
             requireActivity().findViewById<View>(R.id.nav_view) as BottomNavigationView
         bottomNavigationView.selectedItemId = bottomNavigationView.menu.getItem(1).itemId
     }
 
-    fun saveText(link: String?) {
+    fun saveText(link: Int) {
         sPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
         val ed = sPref?.edit()
-        ed?.putInt("MY_POS", 47/*Integer.parseInt(link)*/)
+        ed?.putInt("MY_POS", link)
         ed?.apply()
     }
 }
