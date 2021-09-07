@@ -73,7 +73,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
 
     //zoomIn button click logic
     private fun zoomIn(){
-        newScale += maxScale/levelCount
+        newScale += (maxScale-minScale)/levelCount
         if(newScale > maxScale) newScale = maxScale
         activity.setScale(newScale)
         updatePath()
@@ -81,7 +81,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
 
     //zoomOut button click logic
     private fun zoomOut(){
-        newScale -= maxScale/levelCount
+        newScale -= (maxScale-minScale)/levelCount
         if(newScale < minScale!!) newScale = minScale!!
         activity.setScale(newScale)
         updatePath()
@@ -116,11 +116,14 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     public fun updatePath(flag : Boolean, start : Int, finish : Int){
         if(!flag) return
         var Path = nav.path(start, finish)
+        var temp = widthMin + (widthMax-widthMin)*newScale/maxScale
+        if (newScale == minScale) temp = widthMin
+        else if(newScale == maxScale) temp = widthMax
         var drawablePath = object : PathView.DrawablePath {
             override val visible: Boolean = true
             override var path: FloatArray = Path as FloatArray
             override var paint: Paint? = p
-            override val width: Float? = widthMin + (widthMax-widthMin)*newScale/maxScale
+            override val width: Float? = temp
         }
         activity?.updatePaths(drawablePath)
     }
