@@ -75,8 +75,8 @@ class PosFragment : Fragment() {
     fun showNavigation(){
         val sPref: SharedPreferences
         sPref = requireActivity().getPreferences(MODE_PRIVATE)
-        if(sPref.getInt("MY_POS", 47) == sPref.getInt("FINISH", 1)){
-            Toast.makeText(context, "Вы прибыли <3", Toast.LENGTH_SHORT).show()
+        if(sPref.getInt("MY_POS", 33) == sPref.getInt("FINISH", 1)){
+            Toast.makeText(context, "Вы пришли", Toast.LENGTH_SHORT).show()
             navHelper?.visibility = View.INVISIBLE
             saveState()
             presenter?.updatePath(true, 0, 0)
@@ -87,7 +87,7 @@ class PosFragment : Fragment() {
         if(pos?.length!! > 2){
             position.text = pos
             navHelper?.visibility = View.VISIBLE
-            presenter?.updatePath(true, sPref.getInt("MY_POS", 47), sPref.getInt("FINISH", 1))
+            presenter?.updatePath(true, sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
         }else navHelper?.visibility = View.INVISIBLE
     }
 

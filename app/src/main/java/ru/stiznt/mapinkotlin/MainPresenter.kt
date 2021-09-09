@@ -26,8 +26,8 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
 
     private var newScale = 0f
     private var showPath = false;
-    private var levelCount = 4
-    private var maxScale = 4f
+    private var levelCount = 5
+    private var maxScale = 2f
     private var minScale = 0.5f
     private var nav : Navigation
     private var p = Paint()
@@ -89,7 +89,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
 
     //generate MapViewConfiguration and set some properties
     fun generateConfig() : MapViewConfiguration{
-        return MapViewConfiguration(levelCount, 1980,1080,256,this).setMaxScale(maxScale).enableRotation().setStartScale(0f)
+        return MapViewConfiguration(levelCount, 3840,2160,256,this).setMaxScale(maxScale).enableRotation().setStartScale(0f)
     }
 
     //get tile from it's row, col and zoomLvl
@@ -97,7 +97,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         try {
             return activity.activity?.assets?.open("tiles/$zoomLvl/$row/$col.jpg")
         }catch (e : Exception){
-            return activity.activity?.assets?.open("tiles/blank.jpg")
+            return activity.activity?.assets?.open("tiles/blank.png")
         }
     }
 

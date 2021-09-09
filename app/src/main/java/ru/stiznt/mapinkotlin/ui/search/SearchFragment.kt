@@ -73,10 +73,10 @@ class SearchFragment : Fragment() {
                         if (pos[i].name.toLowerCase().contains(command.toLowerCase())) filter.add(pos[i])
                     }
                     historyAdapter = HistoryAdapter(context, R.layout.list_item, filter)
-                    historyAdapter?.setInvisible()
+                    //historyAdapter?.setInvisible()
                     listView!!.adapter = historyAdapter
                 } else{
-                    historyAdapter?.setVisible()
+                    //historyAdapter?.setVisible()
                     onShowStory()
                 }
             }
