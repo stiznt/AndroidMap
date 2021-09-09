@@ -11,9 +11,11 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import ru.stiznt.mapinkotlin.MainPresenter
 import ovh.plrapps.mapview.MapView
+import ovh.plrapps.mapview.api.addMarker
 import ovh.plrapps.mapview.api.setAngle
 import ovh.plrapps.mapview.paths.PathView
 import ovh.plrapps.mapview.paths.addPathView
+import ovh.plrapps.mapview.paths.removePathView
 import ru.stiznt.mapinkotlin.Models.Cabinet
 import ru.stiznt.mapinkotlin.R
 
@@ -60,7 +62,7 @@ class PosFragment : Fragment() {
         navHelper?.setOnClickListener(View.OnClickListener {
             navHelper?.visibility = View.INVISIBLE
             saveState()
-            presenter?.updatePath(true, 0, 0)
+            deletePaths()
         })
 
         showNavigation()
@@ -79,8 +81,7 @@ class PosFragment : Fragment() {
             Toast.makeText(context, "Вы пришли", Toast.LENGTH_SHORT).show()
             navHelper?.visibility = View.INVISIBLE
             saveState()
-            presenter?.updatePath(true, 0, 0)
-            saveState()
+            deletePaths()
         }
         val position = root!!.findViewById<View>(R.id.position) as TextView
         var pos = sPref.getString("position", "")
@@ -116,4 +117,8 @@ class PosFragment : Fragment() {
         pathView?.updatePaths(listOf(path))
     }
 
+    fun deletePaths(){
+        mapView?.removePathView(pathView!!)
+        pathView = PathView(mapView!!.context)
+    }
 }

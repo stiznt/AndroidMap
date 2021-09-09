@@ -101,7 +101,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
     }
 
-    public fun updatePath(){
+    fun updatePath(){
         if(!showPath) return
         var Path = nav.path(1, 130)
         var drawablePath = object : PathView.DrawablePath {
@@ -113,7 +113,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         activity?.updatePaths(drawablePath)
     }
 
-    public fun updatePath(flag : Boolean, start : Int, finish : Int){
+    fun updatePath(flag : Boolean, start : Int, finish : Int){
         if(!flag) return
         var Path = nav.path(start, finish)
         var temp = widthMin + (widthMax-widthMin)*newScale/maxScale
@@ -127,4 +127,6 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
         activity?.updatePaths(drawablePath)
     }
+
+
 }
