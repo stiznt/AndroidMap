@@ -1,12 +1,14 @@
 package ru.stiznt.mapinkotlin
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import ovh.plrapps.mapview.MapViewConfiguration
 import ovh.plrapps.mapview.ReferentialData
 import ovh.plrapps.mapview.ReferentialListener
@@ -33,6 +35,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     private var p = Paint()
     private var widthMax = 60f
     private var widthMin = 10f
+    private var realMinScale = 0f
 
     init {
         this.activity = activity
@@ -47,10 +50,11 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     override fun onReferentialChanged(refData: ReferentialData) {
         this.refData = refData
         activity.rotateCompass(refData.angle)
-        if(minScale == null) minScale = refData.scale
+        if(realMinScale == 0f) realMinScale = refData.scale
         if(refData.scale != newScale){
             newScale = refData.scale
-            updatePath()
+            val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
+            updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
         }
 
     }
@@ -67,24 +71,27 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     //compass button click logic
     private fun mapCentre(){
         activity.rotate(0f)
-        activity.setScale(0f)
-        updatePath()
+        //activity.setScale(0f)
     }
 
     //zoomIn button click logic
     private fun zoomIn(){
+        val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
         newScale += (maxScale-minScale)/levelCount
         if(newScale > maxScale) newScale = maxScale
         activity.setScale(newScale)
-        updatePath()
+        Log.d("test", "" + newScale)
+        updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
     }
 
     //zoomOut button click logic
     private fun zoomOut(){
+        val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
         newScale -= (maxScale-minScale)/levelCount
-        if(newScale < minScale!!) newScale = minScale!!
+        if(newScale < realMinScale) newScale = realMinScale
         activity.setScale(newScale)
-        updatePath()
+        Log.d("test", "" + newScale)
+        updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
     }
 
     //generate MapViewConfiguration and set some properties
@@ -101,20 +108,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
     }
 
-    fun updatePath(){
-        if(!showPath) return
-        var Path = nav.path(1, 130)
-        var drawablePath = object : PathView.DrawablePath {
-            override val visible: Boolean = true
-            override var path: FloatArray = Path as FloatArray
-            override var paint: Paint? = p
-            override val width: Float? = widthMin + (widthMax-widthMin)*newScale/maxScale
-        }
-        activity?.updatePaths(drawablePath)
-    }
-
-    fun updatePath(flag : Boolean, start : Int, finish : Int){
-        if(!flag) return
+    fun updatePath(start : Int, finish : Int){
         var Path = nav.path(start, finish)
         var temp = widthMin + (widthMax-widthMin)*newScale/maxScale
         if (newScale == minScale) temp = widthMin

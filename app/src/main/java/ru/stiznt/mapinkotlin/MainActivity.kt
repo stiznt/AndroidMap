@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         )
             .build()
 
-       /* val db: DBConnector
+       val db: DBConnector
         db = DBConnector(this)
 
         db.addDB(Cabinet("Буфет",36))
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         db.addDB(Cabinet("Туалет восток",100))
         db.addDB(Cabinet("Туалет запад",11))
         db.addDB(Cabinet("Хол",37))
-        db.addDB(Cabinet("Г-341",111))*/
+        db.addDB(Cabinet("Г-341",111))
 
 
 
