@@ -28,7 +28,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     private var showPath = false;
     private var levelCount = 5
     private var maxScale = 2f
-    private var minScale = 0.5f
+    private var minScale = 0f//0.5f
     private var nav : Navigation
     private var p = Paint()
     private var widthMax = 60f
@@ -39,7 +39,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         nav = Navigation()
         var json = activity.activity?.assets?.open("map.json")?.reader().use { it?.readText() }
         nav.loadMapFromJson(json!!)
-        p.color = Color.GREEN
+        p.color = Color.rgb(6,82,253)
         p.strokeCap = Paint.Cap.ROUND
     }
 
