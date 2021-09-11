@@ -4,10 +4,13 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.util.SparseArray
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.vision.CameraSource
@@ -20,6 +23,7 @@ import java.io.IOException
 
 class QR_Scanner : AppCompatActivity() {
     var cameraPreview: SurfaceView? = null
+    var message: TextView? = null
     var barcodeDetector: BarcodeDetector? = null
     var cameraSource: CameraSource? = null
     val RequestCameraPermissionId = 1001
@@ -28,6 +32,7 @@ class QR_Scanner : AppCompatActivity() {
         setContentView(R.layout.activity_q_r__scanner)
         supportActionBar!!.hide()
         cameraPreview = findViewById<View>(R.id.cameraPreview) as SurfaceView
+        message = findViewById<TextView>(R.id.mess) as TextView
         barcodeDetector = BarcodeDetector.Builder(this)
             .setBarcodeFormats(Barcode.QR_CODE)
             .build()
@@ -77,9 +82,14 @@ class QR_Scanner : AppCompatActivity() {
                 val intent = Intent()
                 if (qrcodes.size() != 0) {
                     link = qrcodes.valueAt(0)?.rawValue
-                    intent.putExtra("link", link)
-                    setResult(3, intent)
-                    finish()
+
+                    val qrMess: List<String> = link!!.split("-_-")
+                    if(qrMess.get(0) == "DoNice"){
+                        intent.putExtra("link", qrMess.get(1))
+                        setResult(3, intent)
+                        finish()
+                    }
+                    message?.setText("Этот QR-код не навигационный, пожалуйста, попробуйте другой")
                 }
             }
         })

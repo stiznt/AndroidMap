@@ -69,31 +69,31 @@ class PosFragment : Fragment() {
         return root
     }
 
-    //TODO:При запуске приложения и при переходе на фрагмент без маршрута не должен появляться тост.
-    //TODO:Сделать горизонтальную разметку и тёмную тему
     //TODO:Добавить базу для BLE
     //TODO:Обработка ProgressBar
 
     fun showNavigation(){
         val sPref: SharedPreferences
         sPref = requireActivity().getPreferences(MODE_PRIVATE)
+
         if(sPref.getInt("MY_POS", 33) == sPref.getInt("FINISH", 1)){
             Toast.makeText(context, "Вы пришли", Toast.LENGTH_SHORT).show()
             navHelper?.visibility = View.INVISIBLE
             saveState()
             deletePaths()
+            saveState()
         }
         val position = root!!.findViewById<View>(R.id.position) as TextView
         var pos = sPref.getString("position", "")
+
         if(pos?.length!! > 2){
             position.text = pos
             navHelper?.visibility = View.VISIBLE
             presenter?.updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
-        }else navHelper?.visibility = View.INVISIBLE
-    }
-
-    fun hideNavHelper(){
-        navHelper?.visibility = View.INVISIBLE
+        }else {
+            navHelper?.visibility = View.INVISIBLE
+            deletePaths()
+        }
     }
 
     fun saveState() {

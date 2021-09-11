@@ -8,8 +8,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/backgroundSearchFragment">
+        android:orientation="vertical">
 
         <View
             android:layout_width="match_parent"
@@ -46,6 +45,8 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="20sp"
+                android:textColor="@color/textColorChat"
+                android:textColorHint="@color/hintColor"
                 android:backgroundTint="@android:color/transparent"
                 android:imeOptions="actionSearch" />
 

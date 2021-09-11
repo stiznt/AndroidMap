@@ -28,6 +28,14 @@ public class DBConnector{
         database.insert(OfficeDBHelper.TABLE_CONTACTS, null, contentValues);
     }
 
+    public boolean isEmpty(){
+        boolean flag = true;
+        Cursor cursor = database.query(OfficeDBHelper.TABLE_CONTACTS, null, null,
+                null, null, null, null);
+        if (cursor.moveToFirst()) flag = false;
+        cursor.close();
+        return flag;
+    }
     public ArrayList<Cabinet> readDB(){
         ArrayList<Cabinet> linesDB = new ArrayList<Cabinet>();
         Cursor cursor = database.query(OfficeDBHelper.TABLE_CONTACTS, null, null,

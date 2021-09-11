@@ -15,13 +15,13 @@ import ru.stiznt.mapinkotlin.R;
 
 import java.util.ArrayList;
 
-public class HistoryAdapter extends ArrayAdapter<Cabinet> {
+public class SearchAdapter extends ArrayAdapter<Cabinet> {
 
     private Context mContext;
     int mResourse;
     ArrayList<Cabinet> arraylist;
 
-    public HistoryAdapter(Context context, int resource, ArrayList<Cabinet> objects) {
+    public SearchAdapter(Context context, int resource, ArrayList<Cabinet> objects) {
         super(context, resource, objects);
         mContext = context;
         mResourse = resource;
@@ -37,9 +37,9 @@ public class HistoryAdapter extends ArrayAdapter<Cabinet> {
         convertView = layoutInflater.inflate(mResourse, parent, false);
 
         TextView textView = (TextView)convertView.findViewById(R.id.tv);
-        //watch = (ImageView) convertView.findViewById(R.id.watch);
         textView.setText(command.getName());
 
         return convertView;
     }
+
 }
