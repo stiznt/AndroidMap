@@ -62,7 +62,8 @@ class MainActivity : AppCompatActivity() {
             db.addDB(Cabinet("Г-338", 104))
             db.addDB(Cabinet("Г-339", 106))
             db.addDB(Cabinet("Г-340", 108))
-            db.addDB(Cabinet("Г-341", 128))
+            db.addDB(Cabinet("Г-341", 111))
+            db.addDB(Cabinet("Г-341а", 128))
             db.addDB(Cabinet("Г-342", 129))
             db.addDB(Cabinet("Г-343", 134))
             db.addDB(Cabinet("Г-344", 116))
@@ -72,10 +73,8 @@ class MainActivity : AppCompatActivity() {
             db.addDB(Cabinet("Лестница центр", 33))
             db.addDB(Cabinet("Туалет восток", 100))
             db.addDB(Cabinet("Туалет запад", 11))
-            db.addDB(Cabinet("Хол", 37))
-            db.addDB(Cabinet("Г-341", 111))
+            db.addDB(Cabinet("Холл", 37))
         }
-
 
         val navController: NavController =
             Navigation.findNavController(this, R.id.nav_host_fragment)

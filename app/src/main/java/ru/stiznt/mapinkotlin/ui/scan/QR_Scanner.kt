@@ -4,13 +4,12 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.util.SparseArray
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.vision.CameraSource
@@ -19,11 +18,11 @@ import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import ru.stiznt.mapinkotlin.R
 import java.io.IOException
+import java.text.DecimalFormat
 
 
 class QR_Scanner : AppCompatActivity() {
     var cameraPreview: SurfaceView? = null
-    var message: TextView? = null
     var barcodeDetector: BarcodeDetector? = null
     var cameraSource: CameraSource? = null
     val RequestCameraPermissionId = 1001
@@ -32,7 +31,6 @@ class QR_Scanner : AppCompatActivity() {
         setContentView(R.layout.activity_q_r__scanner)
         supportActionBar!!.hide()
         cameraPreview = findViewById<View>(R.id.cameraPreview) as SurfaceView
-        message = findViewById<TextView>(R.id.mess) as TextView
         barcodeDetector = BarcodeDetector.Builder(this)
             .setBarcodeFormats(Barcode.QR_CODE)
             .build()
@@ -78,18 +76,23 @@ class QR_Scanner : AppCompatActivity() {
         barcodeDetector?.setProcessor(object : Detector.Processor<Barcode?> {
             override fun release() {}
             override fun receiveDetections(detections: Detector.Detections<Barcode?>) {
-                val qrcodes: SparseArray<Barcode?> = detections.getDetectedItems()
+                val qrcodes: SparseArray<Barcode?> = detections.detectedItems
                 val intent = Intent()
                 if (qrcodes.size() != 0) {
                     link = qrcodes.valueAt(0)?.rawValue
 
-                    val qrMess: List<String> = link!!.split("-_-")
-                    if(qrMess.get(0) == "DoNice"){
-                        intent.putExtra("link", qrMess.get(1))
+                    val qrMess: List<String> = link!!.split(":->")
+                    if (qrMess[0] == "DoNice") {
+                        intent.putExtra("link", qrMess[1])
                         setResult(3, intent)
                         finish()
-                    }
-                    message?.setText("Этот QR-код не навигационный, пожалуйста, попробуйте другой")
+                    } else
+                        runOnUiThread {
+                            var message: TextView? = null
+                            message = findViewById<TextView>(R.id.mess) as TextView
+                            message.textSize = 22f
+                            message?.text = "Этот QR-код не навигационный,\nпожалуйста,\nпопробуйте другой."
+                        }
                 }
             }
         })

@@ -14,12 +14,11 @@ class SplashScreenActivity : AppCompatActivity() {
 
         splash = findViewById(R.id.splash)
         splash?.alpha = 0f
-        splash?.animate()?.setDuration(3000)?.alpha(10f)?.withEndAction {
+        splash?.animate()?.setDuration(1000)?.alpha(1f)?.withEndAction {
             val i = Intent(this, MainActivity::class.java)
             startActivity(i)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }
-
     }
 }

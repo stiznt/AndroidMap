@@ -26,12 +26,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Отсканируйте QR–код"
+            android:gravity="top|center_horizontal"
             android:id="@+id/mess"
             android:layout_gravity="center|bottom"
             android:textColor="@color/white"
             android:fontFamily="@font/font_verdana"
             android:textSize="25sp"
-            android:layout_marginBottom="50dp"/>
+            android:layout_marginBottom="100dp"/>
     </FrameLayout>
 
 
