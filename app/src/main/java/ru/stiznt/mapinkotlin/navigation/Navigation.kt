@@ -2,6 +2,7 @@ package ru.stiznt.mapinkotlin.navigation
 
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.sqrt
 
 class Navigation {
 
@@ -12,9 +13,29 @@ class Navigation {
         Path = null
     }
 
+    fun dist(start : Int, finish: Int) : Float{
+        val loh = path(start, finish)
+        var res = 0f
+
+        var i = 2
+        var px = loh!![0]
+        var py = loh[1]
+        while(i < loh.size){
+            var x = loh[i]
+            var y = loh[i+1]
+
+            res += sqrt((x-px)*(x-px) + (y-py)*(y-py))
+            px = x
+            py = y
+            i += 2
+        }
+
+        return res
+    }
+
     fun path(start : Int, finish :Int) : FloatArray? {
         if(Path?.from == start && Path?.to == finish) return Path?.path
-       var que = ArrayList<Map.Dot>()
+        var que = ArrayList<Map.Dot>()
         map.getDot(start).setG(0f)
         map.getDot(start).setH(map.dist(start, finish))
 
@@ -49,6 +70,7 @@ class Navigation {
                 }
             }
         }
+        map.clear()
         return null
     }
 
@@ -91,18 +113,12 @@ class Navigation {
             override var from = path[0]
             override var to = path[path.size-1]
         }
+        map.clear()
         return lines
     }
 
     fun loadMapFromJson(json : String){
         map.loadFromString(json)
-    }
-
-    fun toDotList(list : ArrayList<Int>) : ArrayList<Map.Dot>{
-        var kek = ArrayList<Map.Dot>()
-        for(i in list) kek.add(map.getDot(i))
-
-        return kek
     }
 
     abstract class pathCash{

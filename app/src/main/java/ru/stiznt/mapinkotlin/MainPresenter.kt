@@ -3,8 +3,10 @@ package ru.stiznt.mapinkotlin
 import android.content.Context.MODE_PRIVATE
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.Build
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import ovh.plrapps.mapview.MapViewConfiguration
 import ovh.plrapps.mapview.ReferentialData
 import ovh.plrapps.mapview.ReferentialListener
@@ -28,8 +30,12 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     private var nav: Navigation
     private var p = Paint()
     private var widthMax = 60f
-    private var widthMin = 5f//10f
+    private var widthMin = 2f//10f
     private var realMinScale = 0f
+
+    private var start_dist = 1;//начальное расстояние
+    private var fin = 1;// финишная точка
+    private var cur_dist = 1;
 
     init {
         this.activity = activity
@@ -52,7 +58,6 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
 
     }
-
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -109,6 +114,27 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
             if (start > 133)
                 start1 = 33
 
+            val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
+            fin = sPref.getInt("fin", 1)
+            start_dist = sPref.getInt("start_dist", 1)
+
+            if (fin.toInt() == finish) {
+                cur_dist = nav.dist(start1, finish).toInt()
+            } else {
+                cur_dist = nav.dist(start1, finish).toInt()
+                start_dist = nav.dist(start1, finish).toInt()
+                fin = finish
+            }
+
+            if (cur_dist > start_dist)
+                start_dist = cur_dist
+
+            var editor = sPref.edit()
+            editor.putInt("fin", fin)
+            editor.putInt("start_dist", start_dist)
+            editor?.apply()
+
+
             var Path = nav.path(start1, finish)
             var temp = widthMin + (widthMax - widthMin) * newScale / maxScale
             if (newScale == minScale) temp = widthMin
@@ -124,5 +150,16 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
     }
 
+    fun ProgressValue(): Int {
+        return (100 - (cur_dist * 100 / start_dist))
 
+    }
+
+    fun getDistMetr(): Int {
+        return start_dist / 52
+    }
+
+    fun getCurDist(): Int {
+        return cur_dist / 52
+    }
 }

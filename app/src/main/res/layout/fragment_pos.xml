@@ -40,7 +40,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center_vertical|right|bottom"
-            android:layout_marginBottom="110dp"
+            android:layout_marginBottom="130dp"
             android:alpha="0.8"
             android:background="@drawable/mest" />
 
@@ -65,28 +65,39 @@
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/circle"
-                    android:textColor="@color/white"
-                    android:visibility="invisible">
-
-                    <ImageView
-                        android:id="@+id/strela"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:src="@drawable/strelka" />
+                    android:orientation="vertical"
+                    android:textColor="@color/white">
 
                     <TextView
-                        android:id="@+id/distance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
                         android:fontFamily="@font/font_verdana"
-                        android:gravity="center"
                         android:maxLines="1"
-                        android:text="10 м"
+                        android:text="Осталось пройти"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
-                        android:textSize="40dp" />
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/remained_path"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/font_verdana"
+                        android:maxLines="1"
+                        android:text=""
+                        android:ellipsize="end"
+                        android:textColor="@color/white"
+                        android:textSize="40sp"
+                        android:textStyle="bold" />
 
 
                 </LinearLayout>
@@ -112,7 +123,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/font_verdana"
                         android:maxLines="1"
-                        android:text="конечная точка"
+                        android:text="Конечная точка"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
@@ -143,7 +154,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/font_verdana"
                         android:maxLines="1"
-                        android:text="корпус Г"
+                        android:text="Корпус Г"
                         android:textColor="@color/white"
                         android:textSize="17sp" />
 
@@ -153,13 +164,15 @@
 
         </LinearLayout>
 
+
         <View
+            android:id="@+id/progressView"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="48dp"
             android:layout_gravity="bottom"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="74dp"
+            android:layout_marginBottom="72dp"
             android:background="@drawable/corners_progressbar" />
 
         <ProgressBar
@@ -172,12 +185,65 @@
 
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="40dp"
             android:layout_marginBottom="80dp"
             android:max="100"
-            android:progress="60"
+            android:progress="1"
             android:progressDrawable="@drawable/progress_bar"
             android:theme="@style/CustomProgressBarHorizontal" />
+
+        <TextView
+            android:id="@+id/dist_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="92dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/font_verdana"
+            android:maxLines="1"
+            android:text="500 м"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/dist_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="92dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/font_verdana"
+            android:maxLines="1"
+            android:text="13:05"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/dist_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="92dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/font_verdana"
+            android:maxLines="1"
+            android:text="9 мин"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <ImageButton
+            android:id="@+id/button_reset"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical|right|bottom"
+            android:layout_marginBottom="79dp"
+            android:layout_marginRight="6dp"
+            android:alpha="1"
+            android:background="@drawable/reset" />
 
     </FrameLayout>
 
