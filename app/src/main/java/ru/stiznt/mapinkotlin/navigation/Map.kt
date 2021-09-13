@@ -41,6 +41,15 @@ class Map {
         return sqrt((dX1-dX2)*(dX1-dX2) + (dY1-dY2)*(dY1-dY2))
     }
 
+    fun clear(){
+        for(dot in dots){
+            dot.setVisited(false)
+            dot.setFromId(-1)
+            dot.setG(0f)
+            dot.setH(0f)
+        }
+    }
+
     class Dot{
         private var x = 0f
         private var y = 0f

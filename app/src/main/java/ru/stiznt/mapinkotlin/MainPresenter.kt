@@ -65,7 +65,6 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     //compass button click logic
     private fun mapCentre() {
         activity.rotate(0f)
-        activity.setScale(0f)
     }
 
     //zoomIn button click logic
@@ -74,8 +73,8 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         newScale += (maxScale - minScale) / levelCount
         if (newScale > maxScale) newScale = maxScale
         activity.setScale(newScale)
-        Log.d("test", "" + newScale)
         updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
+
     }
 
     //zoomOut button click logic
