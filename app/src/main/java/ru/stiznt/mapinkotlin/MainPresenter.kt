@@ -6,7 +6,9 @@ import android.graphics.Paint
 import android.os.Build
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatImageView
 import ovh.plrapps.mapview.MapViewConfiguration
 import ovh.plrapps.mapview.ReferentialData
 import ovh.plrapps.mapview.ReferentialListener
@@ -15,6 +17,8 @@ import ovh.plrapps.mapview.paths.PathView
 import ru.stiznt.mapinkotlin.navigation.Navigation
 import ru.stiznt.mapinkotlin.ui.pos.PosFragment
 import java.io.InputStream
+import kotlin.math.abs
+import kotlin.math.atan2
 
 class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialListener,
     TileStreamProvider {
@@ -53,6 +57,8 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         if (realMinScale == 0f) realMinScale = refData.scale
         if (refData.scale != newScale) {
             newScale = refData.scale
+            activity?.setPositionMarkerScale(newScale)
+            activity?.setFinishMarkerScale(newScale)
             val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
             updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
         }
@@ -117,7 +123,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
             fin = sPref.getInt("fin", 1)
             start_dist = sPref.getInt("start_dist", 1)
 
-            if (fin.toInt() == finish) {
+            if (fin == finish) {
                 cur_dist = nav.dist(start1, finish).toInt()
             } else {
                 cur_dist = nav.dist(start1, finish).toInt()
@@ -145,9 +151,22 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
                 override val width: Float? = temp
             }
             activity?.updatePaths(drawablePath)
+            var dx = Path!![Path.size-2].toDouble()
+            var dy = Path!![Path.size-1].toDouble()
+            activity?.addFinishMarker(dx / 3840, dy/2160)
+
+
+            dx = Path!![0].toDouble()
+            dy = Path!![1].toDouble()
+            activity?.addPositionMarker(dx / 3840, dy/2160)
+            var kek = Math.toDegrees(atan2(dx.toFloat()-Path!![2], dy.toFloat()-Path!![3]).toDouble())
+            activity?.rotateMarker(-kek.toFloat())
+
         } catch (ex: Exception) {
         }
     }
+
+
 
     fun ProgressValue(): Int {
         return (100 - (cur_dist * 100 / start_dist))

@@ -3,6 +3,8 @@ package ru.stiznt.mapinkotlin.ui.pos
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,14 +13,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import ru.stiznt.mapinkotlin.MainPresenter
 import ovh.plrapps.mapview.MapView
 import ovh.plrapps.mapview.api.addMarker
+import ovh.plrapps.mapview.api.getMarkerByTag
+import ovh.plrapps.mapview.api.removeMarker
 import ovh.plrapps.mapview.api.setAngle
-import ovh.plrapps.mapview.paths.PathView
-import ovh.plrapps.mapview.paths.addPathView
-import ovh.plrapps.mapview.paths.removePathView
+import ovh.plrapps.mapview.paths.*
 import ru.stiznt.mapinkotlin.Models.Cabinet
 import ru.stiznt.mapinkotlin.R
 import java.time.LocalTime
@@ -44,6 +48,9 @@ class PosFragment : Fragment() {
     private var presenter: MainPresenter? = null
     private var pathView: PathView? = null
 
+    private var finishMarker: AppCompatImageView? = null
+    private var positionMarker: AppCompatImageView? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
@@ -65,7 +72,7 @@ class PosFragment : Fragment() {
         //set configuration to mapView
         mapView?.configure(presenter!!.generateConfig())
         //set coordinates maxmimum and minimum
-        //mapView?.defineBounds(0.0,0.0,1.0,1.0)
+        mapView?.defineBounds(0.0,0.0,1.0,1.0)
         //navHelper?.visibility = View.INVISIBLE
         //pathView init
         pathView = PathView(mapView!!.context)
@@ -92,6 +99,14 @@ class PosFragment : Fragment() {
             saveState()
             deletePaths()
         })
+
+        finishMarker = AppCompatImageView(this.requireContext()).apply {
+            setImageResource(R.drawable.finish_marker_centered)
+        }
+
+        positionMarker = AppCompatImageView(this.requireContext()).apply {
+            setImageResource(R.drawable.position_marker)
+        }
 
         showNavigation()
         return root
@@ -177,6 +192,10 @@ class PosFragment : Fragment() {
         rotateCompass(angle)
     }
 
+    fun rotateMarker(angle: Float){
+        positionMarker?.rotation = angle;
+    }
+
     // Rotate compassButton to @angel
     fun rotateCompass(angle: Float) {
         compassButton?.rotation = angle
@@ -185,13 +204,36 @@ class PosFragment : Fragment() {
     // Scale mapView to @scale. Value is in range 0 - 1
     fun setScale(scale: Float) {
         mapView?.setScaleFromCenter(scale)
+        setPositionMarkerScale(scale)
+        setFinishMarkerScale(scale)
+    }
+
+    fun setFinishMarkerScale(scale: Float){
+        finishMarker?.scaleX = scale + 0.5f
+        finishMarker?.scaleY = scale + 0.5f
+    }
+
+    fun setPositionMarkerScale(scale: Float){
+        positionMarker?.scaleX = scale + 1f
+        positionMarker?.scaleY = scale + 1f
     }
 
     fun updatePaths(path: PathView.DrawablePath) {
         pathView?.updatePaths(listOf(path))
     }
 
+    fun addFinishMarker(x : Double, y : Double){
+        mapView?.addMarker(finishMarker!!, x, y, -0.5f, -0.5f)
+    }
+
+    fun addPositionMarker(x : Double, y:Double){
+
+        mapView?.addMarker(positionMarker!!, x, y, -0.5f, -0.5f)
+    }
+
     fun deletePaths() {
+        mapView?.removeMarker(finishMarker!!)
+        mapView?.removeMarker(positionMarker!!)
         mapView?.removePathView(pathView!!)
         pathView = PathView(mapView!!.context)
     }
