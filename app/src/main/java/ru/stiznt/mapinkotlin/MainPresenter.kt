@@ -36,6 +36,8 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     private var widthMax = 60f
     private var widthMin = 2f//10f
     private var realMinScale = 0f
+    private var angleDegree = 0f
+    private var positionMarkerAngle = 0f
 
     private var start_dist = 1;//начальное расстояние
     private var fin = 1;// финишная точка
@@ -53,7 +55,9 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     //When MapView is change, this method set changed parameters
     override fun onReferentialChanged(refData: ReferentialData) {
         this.refData = refData
+        angleDegree = refData.angle
         activity.rotateCompass(refData.angle)
+        activity.rotateMarker(-positionMarkerAngle + refData.angle)
         if (realMinScale == 0f) realMinScale = refData.scale
         if (refData.scale != newScale) {
             newScale = refData.scale
@@ -159,8 +163,8 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
             dx = Path!![0].toDouble()
             dy = Path!![1].toDouble()
             activity?.addPositionMarker(dx / 3840, dy/2160)
-            var kek = Math.toDegrees(atan2(dx.toFloat()-Path!![2], dy.toFloat()-Path!![3]).toDouble())
-            activity?.rotateMarker(-kek.toFloat())
+            positionMarkerAngle = Math.toDegrees(atan2(dx.toFloat()-Path!![2], dy.toFloat()-Path!![3]).toDouble()).toFloat()
+            activity?.rotateMarker(-positionMarkerAngle + angleDegree)
 
         } catch (ex: Exception) {
         }
