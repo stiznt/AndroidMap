@@ -157,8 +157,12 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
 
         val kek = sPref.getString("position", "")
 
+        var dx : Double = 0.0
+        var dy : Double = 0.0
         if(kek == ""){
-
+            dx = Path!![0].toDouble()
+            dy = Path!![1].toDouble()
+            activity?.addPositionMarker(dx / 3840, dy/2160)
         }else{
             var dx = Path!![Path.size-2].toDouble()
             var dy = Path!![Path.size-1].toDouble()
