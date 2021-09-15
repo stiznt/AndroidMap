@@ -117,57 +117,61 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
     }
 
-    fun updatePath(start: Int, finish: Int) {
-        try {
-            var start1 = start
-            if (start > 133)
-                start1 = 33
+    fun updatePath(start: Int, finish: Int) = try {
+        var start1 = start
+        if (start > 133)
+            start1 = 33
 
-            val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
-            fin = sPref.getInt("fin", 1)
-            start_dist = sPref.getInt("start_dist", 1)
+        val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
+        fin = sPref.getInt("fin", 1)
+        start_dist = sPref.getInt("start_dist", 1)
 
-            if (fin == finish) {
-                cur_dist = nav.dist(start1, finish).toInt()
-            } else {
-                cur_dist = nav.dist(start1, finish).toInt()
-                start_dist = nav.dist(start1, finish).toInt()
-                fin = finish
-            }
+        if (fin == finish) {
+            cur_dist = nav.dist(start1, finish).toInt()
+        } else {
+            cur_dist = nav.dist(start1, finish).toInt()
+            start_dist = nav.dist(start1, finish).toInt()
+            fin = finish
+        }
 
-            if (cur_dist > start_dist)
-                start_dist = cur_dist
+        if (cur_dist > start_dist)
+            start_dist = cur_dist
 
-            var editor = sPref.edit()
-            editor.putInt("fin", fin)
-            editor.putInt("start_dist", start_dist)
-            editor?.apply()
+        var editor = sPref.edit()
+        editor.putInt("fin", fin)
+        editor.putInt("start_dist", start_dist)
+        editor?.apply()
 
 
-            var Path = nav.path(start1, finish)
-            var temp = widthMin + (widthMax - widthMin) * newScale / maxScale
-            if (newScale == minScale) temp = widthMin
-            else if (newScale == maxScale) temp = widthMax
-            var drawablePath = object : PathView.DrawablePath {
-                override val visible: Boolean = true
-                override var path: FloatArray = Path as FloatArray
-                override var paint: Paint? = p
-                override val width: Float? = temp
-            }
-            activity?.updatePaths(drawablePath)
+        var Path = nav.path(start1, finish)
+        var temp = widthMin + (widthMax - widthMin) * newScale / maxScale
+        if (newScale == minScale) temp = widthMin
+        else if (newScale == maxScale) temp = widthMax
+        var drawablePath = object : PathView.DrawablePath {
+            override val visible: Boolean = true
+            override var path: FloatArray = Path as FloatArray
+            override var paint: Paint? = p
+            override val width: Float? = temp
+        }
+        activity?.updatePaths(drawablePath)
+
+        val kek = sPref.getString("position", "")
+
+        if(kek == ""){
+
+        }else{
             var dx = Path!![Path.size-2].toDouble()
             var dy = Path!![Path.size-1].toDouble()
             activity?.addFinishMarker(dx / 3840, dy/2160)
-
 
             dx = Path!![0].toDouble()
             dy = Path!![1].toDouble()
             activity?.addPositionMarker(dx / 3840, dy/2160)
             positionMarkerAngle = Math.toDegrees(atan2(dx.toFloat()-Path!![2], dy.toFloat()-Path!![3]).toDouble()).toFloat()
             activity?.rotateMarker(-positionMarkerAngle + angleDegree)
-
-        } catch (ex: Exception) {
         }
+
+    } catch (ex: Exception) {
     }
 
 
