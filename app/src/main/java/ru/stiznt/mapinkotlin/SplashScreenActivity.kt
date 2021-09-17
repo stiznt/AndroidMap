@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import ru.stiznt.mapinkotlin.Tutorial.OnBoarding
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -15,7 +16,7 @@ class SplashScreenActivity : AppCompatActivity() {
         splash = findViewById(R.id.splash)
         splash?.alpha = 0f
         splash?.animate()?.setDuration(1000)?.alpha(1f)?.withEndAction {
-            val i = Intent(this, MainActivity::class.java)
+            val i = Intent(this, OnBoarding::class.java)
             startActivity(i)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
