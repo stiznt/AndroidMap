@@ -25,7 +25,7 @@ import ovh.plrapps.mapview.api.setAngle
 import ovh.plrapps.mapview.paths.*
 import ru.stiznt.mapinkotlin.Models.Cabinet
 import ru.stiznt.mapinkotlin.R
-import java.time.LocalTime
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class PosFragment : Fragment() {
@@ -116,7 +116,6 @@ class PosFragment : Fragment() {
     }
 
     //TODO:Добавить базу для BLE
-    //TODO:Обработка ProgressBar
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun showNavigation() {
@@ -154,9 +153,10 @@ class PosFragment : Fragment() {
 
             presenter?.updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
 
-            var travel_time = presenter?.getCurDist()?.div(67) //67 метров в минуту
-            var time1: LocalTime? = travel_time?.toLong()?.let { LocalTime.now().plusMinutes(it) }
 
+            var travel_time = presenter?.getCurDist()?.div(67) //67 метров в минуту
+            //val time1 = travel_time?.toLong()?.let { LocalTime.now().plusMinutes(it) }
+            val time1 = travel_time?.let { LocalDateTime.now().plusMinutes(it.toLong()) }
             dist_time?.text = time1?.format(DateTimeFormatter.ofPattern("HH:mm"))
             if (travel_time != null) {
                 if (travel_time < 1)

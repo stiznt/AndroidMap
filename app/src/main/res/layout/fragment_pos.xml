@@ -81,7 +81,7 @@
                         android:text="Осталось пройти"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
-                        android:textSize="17sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/remained_path"

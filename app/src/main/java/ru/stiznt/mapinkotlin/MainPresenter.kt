@@ -147,13 +147,11 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
             status = false;
         }
 
-
         var editor = sPref.edit()
         editor.putInt("fin", fin)
         editor.putInt("start_dist", start_dist)
         editor.putInt("cur_dist", cur_dist)
         editor?.apply()
-
 
         var Path = nav.path(start1, finish)
         var temp = widthMin + (widthMax - widthMin) * newScale / maxScale
@@ -173,6 +171,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
 
         var dx: Double = 0.0
         var dy: Double = 0.0
+
         if (kek == "") {
             dx = Path!![0].toDouble()
             dy = Path!![1].toDouble()
