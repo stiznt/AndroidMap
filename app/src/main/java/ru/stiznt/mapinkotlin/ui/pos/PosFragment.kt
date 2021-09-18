@@ -42,6 +42,7 @@ class PosFragment : Fragment() {
     private var remained_path: TextView? = null
     private var dist_time: TextView? = null
     private var dist_min: TextView? = null
+    private var status: LinearLayout? = null
 
     private var progressBar: ProgressBar? = null
     private var progressView: View? = null
@@ -69,10 +70,11 @@ class PosFragment : Fragment() {
         dist_time = root?.findViewById<TextView>(R.id.dist_time)
         dist_min = root?.findViewById<TextView>(R.id.dist_min)
         remained_path = root?.findViewById<TextView>(R.id.remained_path)
+        status = root?.findViewById<LinearLayout>(R.id.status)//Вы ушли с маршрута
         //set configuration to mapView
         mapView?.configure(presenter!!.generateConfig())
         //set coordinates maxmimum and minimum
-        mapView?.defineBounds(0.0,0.0,1.0,1.0)
+        mapView?.defineBounds(0.0, 0.0, 1.0, 1.0)
         //navHelper?.visibility = View.INVISIBLE
         //pathView init
         pathView = PathView(mapView!!.context)
@@ -89,13 +91,14 @@ class PosFragment : Fragment() {
         zoomOutButton?.setOnClickListener(presenter)
 
         reset_path?.setOnClickListener(View.OnClickListener {
-            reset_path?.visibility=View.INVISIBLE
+            reset_path?.visibility = View.INVISIBLE
             navHelper?.visibility = View.INVISIBLE
             progressBar?.visibility = View.INVISIBLE
             progressView?.visibility = View.INVISIBLE
             dist_progress?.visibility = View.INVISIBLE
             dist_time?.visibility = View.INVISIBLE
             dist_min?.visibility = View.INVISIBLE
+            status?.visibility = View.INVISIBLE
             saveState()
             deletePaths()
         })
@@ -128,7 +131,8 @@ class PosFragment : Fragment() {
             dist_progress?.visibility = View.INVISIBLE
             dist_time?.visibility = View.INVISIBLE
             dist_min?.visibility = View.INVISIBLE
-            reset_path?.visibility=View.INVISIBLE
+            reset_path?.visibility = View.INVISIBLE
+            status?.visibility = View.INVISIBLE
             saveState()
             deletePaths()
             saveState()
@@ -145,7 +149,7 @@ class PosFragment : Fragment() {
             dist_progress?.visibility = View.VISIBLE
             dist_time?.visibility = View.VISIBLE
             dist_min?.visibility = View.VISIBLE
-            reset_path?.visibility=View.VISIBLE
+            reset_path?.visibility = View.VISIBLE
 
             presenter?.updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
 
@@ -166,6 +170,10 @@ class PosFragment : Fragment() {
                 dist_progress?.text = presenter?.getDistMetr().toString() + "м"
                 remained_path?.text = presenter?.getCurDist().toString() + "м"
             }
+            if (presenter?.getStatus() == false)
+                status?.visibility = View.VISIBLE
+            else
+                status?.visibility = View.INVISIBLE
 
         } else {
             navHelper?.visibility = View.INVISIBLE
@@ -174,7 +182,8 @@ class PosFragment : Fragment() {
             dist_progress?.visibility = View.INVISIBLE
             dist_time?.visibility = View.INVISIBLE
             dist_min?.visibility = View.INVISIBLE
-            reset_path?.visibility=View.INVISIBLE
+            reset_path?.visibility = View.INVISIBLE
+            status?.visibility = View.INVISIBLE
             deletePaths()
         }
     }
@@ -192,7 +201,7 @@ class PosFragment : Fragment() {
         rotateCompass(angle)
     }
 
-    fun rotateMarker(angle: Float){
+    fun rotateMarker(angle: Float) {
         positionMarker?.rotation = angle;
     }
 
@@ -208,12 +217,12 @@ class PosFragment : Fragment() {
         setFinishMarkerScale(scale)
     }
 
-    fun setFinishMarkerScale(scale: Float){
+    fun setFinishMarkerScale(scale: Float) {
         finishMarker?.scaleX = scale + 0.5f
         finishMarker?.scaleY = scale + 0.5f
     }
 
-    fun setPositionMarkerScale(scale: Float){
+    fun setPositionMarkerScale(scale: Float) {
         positionMarker?.scaleX = scale + 1f
         positionMarker?.scaleY = scale + 1f
     }
@@ -222,18 +231,18 @@ class PosFragment : Fragment() {
         pathView?.updatePaths(listOf(path))
     }
 
-    fun addFinishMarker(x : Double, y : Double){
+    fun addFinishMarker(x: Double, y: Double) {
         mapView?.addMarker(finishMarker!!, x, y, -0.5f, -0.5f)
     }
 
-    fun addPositionMarker(x : Double, y:Double){
+    fun addPositionMarker(x: Double, y: Double) {
 
         mapView?.addMarker(positionMarker!!, x, y, -0.5f, -0.5f)
     }
 
     fun deletePaths() {
         mapView?.removeMarker(finishMarker!!)
-        mapView?.removeMarker(positionMarker!!)
+        //mapView?.removeMarker(positionMarker!!)
         mapView?.removePathView(pathView!!)
         pathView = PathView(mapView!!.context)
     }

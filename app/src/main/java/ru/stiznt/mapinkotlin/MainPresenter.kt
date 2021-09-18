@@ -40,8 +40,10 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     private var positionMarkerAngle = 0f
 
     private var start_dist = 1;//начальное расстояние
-    private var fin = 1;// финишная точка
-    private var cur_dist = 1;
+    private var fin = -1;// финишная точка
+    private var cur_dist = 0;
+    private var prev_dist = 0;
+    private var status = true;
 
     init {
         this.activity = activity
@@ -123,23 +125,29 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
             start1 = 33
 
         val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
-        fin = sPref.getInt("fin", 1)
+        fin = sPref.getInt("fin", -1)
         start_dist = sPref.getInt("start_dist", 1)
+        cur_dist = sPref.getInt("cur_dist", 0)
 
         if (fin == finish) {
+            prev_dist = cur_dist
             cur_dist = nav.dist(start1, finish).toInt()
         } else {
             cur_dist = nav.dist(start1, finish).toInt()
             start_dist = nav.dist(start1, finish).toInt()
+            prev_dist = start_dist
             fin = finish
         }
 
-        if (cur_dist > start_dist)
-            start_dist = cur_dist
+        if (cur_dist > prev_dist) {
+            status = false;
+        }
+
 
         var editor = sPref.edit()
         editor.putInt("fin", fin)
         editor.putInt("start_dist", start_dist)
+        editor.putInt("cur_dist", cur_dist)
         editor?.apply()
 
 
@@ -157,21 +165,23 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
 
         val kek = sPref.getString("position", "")
 
-        var dx : Double = 0.0
-        var dy : Double = 0.0
-        if(kek == ""){
+        var dx: Double = 0.0
+        var dy: Double = 0.0
+        if (kek == "") {
             dx = Path!![0].toDouble()
             dy = Path!![1].toDouble()
-            activity?.addPositionMarker(dx / 3840, dy/2160)
-        }else{
-            var dx = Path!![Path.size-2].toDouble()
-            var dy = Path!![Path.size-1].toDouble()
-            activity?.addFinishMarker(dx / 3840, dy/2160)
+            activity?.addPositionMarker(dx / 3840, dy / 2160)
+        } else {
+            var dx = Path!![Path.size - 2].toDouble()
+            var dy = Path!![Path.size - 1].toDouble()
+            activity?.addFinishMarker(dx / 3840, dy / 2160)
 
             dx = Path!![0].toDouble()
             dy = Path!![1].toDouble()
-            activity?.addPositionMarker(dx / 3840, dy/2160)
-            positionMarkerAngle = Math.toDegrees(atan2(dx.toFloat()-Path!![2], dy.toFloat()-Path!![3]).toDouble()).toFloat()
+            activity?.addPositionMarker(dx / 3840, dy / 2160)
+            positionMarkerAngle =
+                Math.toDegrees(atan2(dx.toFloat() - Path!![2], dy.toFloat() - Path!![3]).toDouble())
+                    .toFloat()
             activity?.rotateMarker(-positionMarkerAngle + angleDegree)
         }
 
@@ -179,17 +189,23 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     }
 
 
-
     fun ProgressValue(): Int {
-        return (100 - (cur_dist * 100 / start_dist))
-
+        var tmp = (100 - (cur_dist * 100 / start_dist))
+        if (tmp > 0)
+            return tmp
+        return 0
     }
 
     fun getDistMetr(): Int {
-        return start_dist / 52
+        return start_dist / 23
     }
 
     fun getCurDist(): Int {
-        return cur_dist / 52
+        Log.i("init", cur_dist.toString())
+        return cur_dist / 23
+    }
+
+    fun getStatus(): Boolean {
+        return status
     }
 }
