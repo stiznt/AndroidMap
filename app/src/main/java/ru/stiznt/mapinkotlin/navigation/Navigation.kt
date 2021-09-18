@@ -13,10 +13,13 @@ class Navigation {
         Path = null
     }
 
+    fun getDot(index : Int): Map.Dot{
+        return map?.getDot(index);
+    }
+
     fun dist(start : Int, finish: Int) : Float{
         val loh = path(start, finish)
         var res = 0f
-
         var i = 2
         var px = loh!![0]
         var py = loh[1]

@@ -119,6 +119,10 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
     }
 
+    fun showMarkerInPos(index : Int){
+        activity?.addPositionMarker(nav.getDot(index).getX().toDouble()/3840, nav.getDot(index).getY().toDouble()/2160)
+    }
+
     fun updatePath(start: Int, finish: Int) = try {
         var start1 = start
         if (start > 133)
@@ -164,6 +168,8 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         activity?.updatePaths(drawablePath)
 
         val kek = sPref.getString("position", "")
+
+        Log.d("loh",""+ Path)
 
         var dx: Double = 0.0
         var dy: Double = 0.0

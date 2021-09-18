@@ -134,6 +134,7 @@ class PosFragment : Fragment() {
             reset_path?.visibility = View.INVISIBLE
             status?.visibility = View.INVISIBLE
             saveState()
+            presenter?.showMarkerInPos(sPref.getInt("MY_POS", 33))
             deletePaths()
             saveState()
         }
