@@ -25,7 +25,7 @@ import ovh.plrapps.mapview.api.setAngle
 import ovh.plrapps.mapview.paths.*
 import ru.stiznt.mapinkotlin.Models.Cabinet
 import ru.stiznt.mapinkotlin.R
-import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class PosFragment : Fragment() {
@@ -123,7 +123,7 @@ class PosFragment : Fragment() {
         sPref = requireActivity().getPreferences(MODE_PRIVATE)
 
         if (sPref.getInt("MY_POS", 33) == sPref.getInt("FINISH", 1)) {
-            Toast.makeText(context, "Вы пришли", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Вы пришли", Toast.LENGTH_LONG).show()
             navHelper?.visibility = View.INVISIBLE
             progressBar?.visibility = View.INVISIBLE
             progressView?.visibility = View.INVISIBLE
@@ -153,10 +153,9 @@ class PosFragment : Fragment() {
 
             presenter?.updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
 
-
             var travel_time = presenter?.getCurDist()?.div(67) //67 метров в минуту
-            //val time1 = travel_time?.toLong()?.let { LocalTime.now().plusMinutes(it) }
-            val time1 = travel_time?.let { LocalDateTime.now().plusMinutes(it.toLong()) }
+            var time1: LocalTime? = travel_time?.toLong()?.let { LocalTime.now().plusMinutes(it) }
+
             dist_time?.text = time1?.format(DateTimeFormatter.ofPattern("HH:mm"))
             if (travel_time != null) {
                 if (travel_time < 1)
