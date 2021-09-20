@@ -18,10 +18,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import ru.stiznt.mapinkotlin.MainPresenter
 import ovh.plrapps.mapview.MapView
-import ovh.plrapps.mapview.api.addMarker
-import ovh.plrapps.mapview.api.getMarkerByTag
-import ovh.plrapps.mapview.api.removeMarker
-import ovh.plrapps.mapview.api.setAngle
+import ovh.plrapps.mapview.api.*
 import ovh.plrapps.mapview.paths.*
 import ru.stiznt.mapinkotlin.Models.Cabinet
 import ru.stiznt.mapinkotlin.R
@@ -220,6 +217,11 @@ class PosFragment : Fragment() {
     fun setFinishMarkerScale(scale: Float) {
         finishMarker?.scaleX = scale + 0.5f
         finishMarker?.scaleY = scale + 0.5f
+    }
+
+    fun moveTo(){
+        //mapView?.moveToMarker(positionMarker!!, true)
+        mapView?.moveToMarker(positionMarker!!, true)
     }
 
     fun setPositionMarkerScale(scale: Float) {

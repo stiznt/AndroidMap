@@ -79,6 +79,10 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
     }
 
+    private fun toMarker(){
+        activity.moveTo()
+    }
+
     //compass button click logic
     private fun mapCentre() {
         activity.rotate(0f)
