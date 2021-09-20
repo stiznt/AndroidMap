@@ -33,7 +33,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     private var minScale = 0f//0.5f
     private var nav: Navigation
     private var p = Paint()
-    private var widthMax = 60f
+    private var widthMax = 50f
     private var widthMin = 2f//10f
     private var realMinScale = 0f
     private var angleDegree = 0f
