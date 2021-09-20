@@ -31,7 +31,7 @@ class ChatFragment : Fragment() {
             override fun onClick(view: View?) {
                 try {
                     val telegram =
-                        Intent(Intent.ACTION_VIEW, Uri.parse("https://telegram.me/denis_bratusev"))
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://telegram.me/kutkovoy"))
                     startActivity(telegram)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -42,7 +42,7 @@ class ChatFragment : Fragment() {
             override fun onClick(v: View?) {
                 try {
                     val mail =
-                        Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + "bratusevd@mail.ru"))
+                        Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + "vladimirkutkovoy@yandex.ru"))
                     startActivity(mail)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -52,7 +52,7 @@ class ChatFragment : Fragment() {
         vk!!.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 try {
-                    val vk = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.me/denis_bratusev"))
+                    val vk = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.me/kutkovoy1"))
                     startActivity(vk)
                 } catch (e: Exception) {
                     e.printStackTrace()

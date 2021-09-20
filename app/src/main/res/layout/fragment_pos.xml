@@ -36,13 +36,23 @@
             android:background="@drawable/minus" />
 
         <ImageButton
-            android:id="@+id/button_compass"
+            android:id="@+id/button_move"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center_vertical|right|bottom"
             android:layout_marginBottom="130dp"
             android:alpha="0.8"
             android:background="@drawable/mest" />
+
+        <ImageButton
+            android:id="@+id/button_compass"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="70dp"
+            android:layout_gravity="center_vertical|right|bottom"
+            android:layout_marginBottom="140dp"
+            android:alpha="0.8"
+            android:background="@drawable/compass" />
 
 
         <LinearLayout

@@ -76,10 +76,12 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
             R.id.button_compass -> mapCentre()
             R.id.button_zoom_out -> zoomOut()
             R.id.button_zoom_in -> zoomIn()
+            R.id.button_move -> toMarker()
         }
     }
 
     private fun toMarker(){
+        activity.setScale(1.3f)
         activity.moveTo()
     }
 

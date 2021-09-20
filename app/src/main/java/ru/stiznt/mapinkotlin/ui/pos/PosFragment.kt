@@ -32,6 +32,7 @@ class PosFragment : Fragment() {
     private var zoomInButton: ImageView? = null
     private var zoomOutButton: ImageView? = null
     private var compassButton: ImageButton? = null
+    private var moveButton: ImageButton? = null
 
     private var navHelper: LinearLayout? = null
     private var reset_path: ImageView? = null
@@ -60,6 +61,7 @@ class PosFragment : Fragment() {
         zoomInButton = root?.findViewById<ImageView>(R.id.button_zoom_in)
         zoomOutButton = root?.findViewById<ImageView>(R.id.button_zoom_out)
         compassButton = root?.findViewById<ImageButton>(R.id.button_compass)
+        moveButton = root?.findViewById<ImageButton>(R.id.button_move)
 
         navHelper = root?.findViewById<LinearLayout>(R.id.navLayOut)
         reset_path = root?.findViewById<ImageButton>(R.id.button_reset)
@@ -86,6 +88,7 @@ class PosFragment : Fragment() {
         compassButton?.setOnClickListener(presenter)
         zoomInButton?.setOnClickListener(presenter)
         zoomOutButton?.setOnClickListener(presenter)
+        moveButton?.setOnClickListener(presenter)
 
         reset_path?.setOnClickListener(View.OnClickListener {
             reset_path?.visibility = View.INVISIBLE
@@ -120,7 +123,7 @@ class PosFragment : Fragment() {
         sPref = requireActivity().getPreferences(MODE_PRIVATE)
 
         if (sPref.getInt("MY_POS", 33) == sPref.getInt("FINISH", 1)) {
-            Toast.makeText(context, "Вы пришли", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Вы пришли в конечный пункт", Toast.LENGTH_LONG).show()
             navHelper?.visibility = View.INVISIBLE
             progressBar?.visibility = View.INVISIBLE
             progressView?.visibility = View.INVISIBLE
@@ -248,6 +251,5 @@ class PosFragment : Fragment() {
         mapView?.removePathView(pathView!!)
         pathView = PathView(mapView!!.context)
     }
-
 
 }
