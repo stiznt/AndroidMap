@@ -22,10 +22,10 @@ public class SliderAdapter extends PagerAdapter {
     }
 
     int images[] = {
-            R.color.purple_500,
-            R.color.purple_200,
-            R.color.purple_700,
-            R.color.teal_200,
+            R.drawable.tutor1,
+            R.drawable.tutor2,
+            R.drawable.tutor3,
+            R.drawable.tutor4,
     };
 
     @Override

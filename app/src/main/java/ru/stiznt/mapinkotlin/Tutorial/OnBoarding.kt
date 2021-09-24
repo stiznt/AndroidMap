@@ -72,13 +72,13 @@ class OnBoarding : AppCompatActivity() {
             addDots(position)
             currentPos = position
             if (position == 0) {
-                next!!.visibility = View.INVISIBLE
+                next?.setText("Skip");
             } else if (position == 1) {
-                next!!.visibility = View.INVISIBLE
+                next?.setText("Skip");
             } else if (position == 2) {
-                next!!.visibility = View.INVISIBLE
+                next?.setText("Skip");
             } else {
-                next!!.visibility = View.VISIBLE
+                next?.setText("Start");
             }
         }
 

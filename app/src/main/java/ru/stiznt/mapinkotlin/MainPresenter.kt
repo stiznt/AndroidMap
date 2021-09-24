@@ -3,12 +3,8 @@ package ru.stiznt.mapinkotlin
 import android.content.Context.MODE_PRIVATE
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Build
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.AppCompatImageView
 import ovh.plrapps.mapview.MapViewConfiguration
 import ovh.plrapps.mapview.ReferentialData
 import ovh.plrapps.mapview.ReferentialListener
@@ -17,7 +13,6 @@ import ovh.plrapps.mapview.paths.PathView
 import ru.stiznt.mapinkotlin.navigation.Navigation
 import ru.stiznt.mapinkotlin.ui.pos.PosFragment
 import java.io.InputStream
-import kotlin.math.abs
 import kotlin.math.atan2
 
 class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialListener,
