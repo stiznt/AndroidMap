@@ -61,13 +61,11 @@
         android:layout_gravity="center"/>
 
     <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/startTutor"
         android:background="@drawable/faq"
         android:layout_marginTop="50dp"
-        android:layout_marginRight="30dp"
-        android:layout_gravity="center|right"/>
-
+        android:layout_gravity="center"/>
 
 </LinearLayout>

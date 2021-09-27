@@ -29,11 +29,11 @@ class OnBoarding : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getSupportActionBar()?.hide();
-        val w: Window = window
+        /*val w: Window = window
         w.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
+        )*/
         setContentView(R.layout.activity_on_boarding)
         //Hooks
         viewPager = findViewById(R.id.slider)
@@ -80,13 +80,13 @@ class OnBoarding : AppCompatActivity() {
             addDots(position)
             currentPos = position
             if (position == 0) {
-                next?.setText("Skip");
+                next?.setText("Пропустить");
             } else if (position == 1) {
-                next?.setText("Skip");
+                next?.setText("Пропустить");
             } else if (position == 2) {
-                next?.setText("Skip");
+                next?.setText("Пропустить");
             } else {
-                next?.setText("Start");
+                next?.setText("Начать");
             }
         }
 

@@ -3,10 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Project/Android/AndroidMap24.09/app/src/main/res/layout/activity_on_boarding.xml" value="0.21105072463768115" />
-        <entry key="..\:/Project/Android/AndroidMap24.09/app/src/main/res/layout/activity_splash_screen.xml" value="0.28442028985507245" />
-        <entry key="..\:/Project/Android/AndroidMap24.09/app/src/main/res/layout/fragment_chat.xml" value="0.36666666666666664" />
-        <entry key="..\:/Project/Android/AndroidMap24.09/app/src/main/res/layout/slides_layout.xml" value="0.2957427536231884" />
+        <entry key="..\:/AndroidStudio/AndroidMap/app/src/main/res/layout/activity_on_boarding.xml" value="0.152" />
+        <entry key="..\:/AndroidStudio/AndroidMap/app/src/main/res/layout/activity_q_r__scanner.xml" value="0.11594202898550725" />
+        <entry key="..\:/AndroidStudio/AndroidMap/app/src/main/res/layout/activity_splash_screen.xml" value="0.11865942028985507" />
+        <entry key="..\:/AndroidStudio/AndroidMap/app/src/main/res/layout/fragment_chat.xml" value="0.11865942028985507" />
+        <entry key="..\:/AndroidStudio/AndroidMap/app/src/main/res/layout/fragment_pos.xml" value="1.2" />
+        <entry key="..\:/AndroidStudio/AndroidMap/app/src/main/res/layout/fragment_scan.xml" value="0.11865942028985507" />
+        <entry key="..\:/AndroidStudio/AndroidMap/app/src/main/res/layout/fragment_search.xml" value="0.11865942028985507" />
+        <entry key="..\:/AndroidStudio/AndroidMap/app/src/main/res/layout/list_comitem.xml" value="0.11865942028985507" />
+        <entry key="..\:/AndroidStudio/AndroidMap/app/src/main/res/layout/list_item.xml" value="0.11865942028985507" />
+        <entry key="..\:/AndroidStudio/AndroidMap/app/src/main/res/layout/slides_layout.xml" value="0.12291666666666666" />
+        <entry key="..\:/ProgrammingProjects/Android Apps/AndroidMap/app/src/main/res/drawable/finish_marker.xml" value="0.3828125" />
+        <entry key="..\:/ProgrammingProjects/Android Apps/AndroidMap/app/src/main/res/drawable/finish_marker_centered.xml" value="0.3828125" />
+        <entry key="..\:/ProgrammingProjects/Android Apps/AndroidMap/app/src/main/res/drawable/position_marker.xml" value="0.3828125" />
+        <entry key="..\:/ProgrammingProjects/Android Apps/AndroidMap/app/src/main/res/drawable/test_marker.xml" value="1.0" />
         <entry key="..\:/Project/Android/AndroidMap_Clone/app/src/main/res/layout-land/fragment_pos.xml" value="0.31040564373897706" />
         <entry key="..\:/Project/Android/AndroidMap_Clone/app/src/main/res/layout/activity_chat_fragment.xml" value="0.276268115942029" />
         <entry key="..\:/Project/Android/AndroidMap_Clone/app/src/main/res/layout/activity_main.xml" value="0.17831813576494426" />

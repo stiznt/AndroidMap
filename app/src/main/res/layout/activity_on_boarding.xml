@@ -8,8 +8,9 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/slider"
         android:layout_width="match_parent"
-        android:layout_weight="7"
-        android:layout_height="0dp">
+        android:layout_weight="12"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp">
     </androidx.viewpager.widget.ViewPager>
 
     <FrameLayout
@@ -24,12 +25,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="2dp"
             android:orientation="horizontal"/>
 
         <Button
             android:id="@+id/start_btn"
-            android:text="Skip"
+            android:text="Пропустить"
+            android:textSize="13dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
