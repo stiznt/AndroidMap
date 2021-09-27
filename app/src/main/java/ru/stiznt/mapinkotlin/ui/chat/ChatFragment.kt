@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.Fragment
+import ru.stiznt.mapinkotlin.Tutorial.OnBoarding
 import java.lang.Exception
 
 
@@ -18,6 +19,7 @@ class ChatFragment : Fragment() {
     private var telega: ImageButton? = null
     private var mail: ImageButton? = null
     private var vk: ImageButton? = null
+    private var faq: ImageButton? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +29,7 @@ class ChatFragment : Fragment() {
         telega = root.findViewById(ru.stiznt.mapinkotlin.R.id.telega)
         mail = root.findViewById(ru.stiznt.mapinkotlin.R.id.mail)
         vk = root.findViewById(ru.stiznt.mapinkotlin.R.id.vk)
+        faq = root.findViewById(ru.stiznt.mapinkotlin.R.id.startTutor)
         telega!!.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 try {
@@ -59,6 +62,12 @@ class ChatFragment : Fragment() {
                 }
             }
         })
+
+        faq!!.setOnClickListener(View.OnClickListener {
+            val i = Intent(context, OnBoarding::class.java)
+            startActivity(i)
+        })
+
         return root
     }
 }
