@@ -34,7 +34,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     private var angleDegree = 0f
     private var positionMarkerAngle = 0f
 
-    private var start_dist = 1;//начальное расстояние
+    private var start_dist = 0;//начальное расстояние
     private var fin = -1;// финишная точка
     private var cur_dist = 0;
     private var prev_dist = 0;
@@ -61,7 +61,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
             activity?.setPositionMarkerScale(newScale)
             activity?.setFinishMarkerScale(newScale)
             val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
-            updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
+            updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 32))
         }
 
     }
@@ -75,7 +75,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
     }
 
-    private fun toMarker(){
+    private fun toMarker() {
         activity.setScale(1.3f)
         activity.moveTo()
     }
@@ -91,7 +91,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         newScale += (maxScale - minScale) / levelCount
         if (newScale > maxScale) newScale = maxScale
         activity.setScale(newScale)
-        updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
+        updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 32))
 
     }
 
@@ -102,7 +102,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         if (newScale < realMinScale) newScale = realMinScale
         activity.setScale(newScale)
         Log.d("test", "" + newScale)
-        updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
+        updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 32))
     }
 
     //generate MapViewConfiguration and set some properties
@@ -120,8 +120,11 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         }
     }
 
-    fun showMarkerInPos(index : Int){
-        activity?.addPositionMarker(nav.getDot(index).getX().toDouble()/3840, nav.getDot(index).getY().toDouble()/2160)
+    fun showMarkerInPos(index: Int) {
+        activity?.addPositionMarker(
+            nav.getDot(index).getX().toDouble() / 3840,
+            nav.getDot(index).getY().toDouble() / 2160
+        )
     }
 
     fun updatePath(start: Int, finish: Int) = try {
@@ -130,18 +133,20 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
             start1 = 33
 
         val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
-        fin = sPref.getInt("fin", -1)
-        start_dist = sPref.getInt("start_dist", 1)
-        cur_dist = sPref.getInt("cur_dist", 0)
+        fin = sPref.getInt("fin", 0)
+        start_dist = sPref.getInt("start_dist", 0)
+        cur_dist = sPref.getInt("cur_dist", 0   )
 
         if (fin == finish) {
             prev_dist = cur_dist
             cur_dist = nav.dist(start1, finish).toInt()
+            Log.i("if", start_dist.toString())
         } else {
-            cur_dist = nav.dist(start1, finish).toInt()
             start_dist = nav.dist(start1, finish).toInt()
+            cur_dist = start_dist
             prev_dist = start_dist
             fin = finish
+            Log.i("else", start_dist.toString())
         }
 
         if (cur_dist > prev_dist) {
@@ -153,6 +158,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
         editor.putInt("start_dist", start_dist)
         editor.putInt("cur_dist", cur_dist)
         editor?.apply()
+
 
         var Path = nav.path(start1, finish)
         var temp = widthMin + (widthMax - widthMin) * newScale / maxScale
@@ -168,7 +174,7 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
 
         val kek = sPref.getString("position", "")
 
-        Log.d("loh",""+ Path)
+        Log.d("loh", "" + Path)
 
         var dx: Double = 0.0
         var dy: Double = 0.0
@@ -207,11 +213,17 @@ class MainPresenter(activity: PosFragment) : View.OnClickListener, ReferentialLi
     }
 
     fun getCurDist(): Int {
-        Log.i("init", cur_dist.toString())
         return cur_dist / 23
     }
 
     fun getStatus(): Boolean {
         return status
+    }
+
+    fun setFin(){
+        val sPref = activity?.requireActivity().getPreferences(MODE_PRIVATE)
+        var editor = sPref.edit()
+        editor.putInt("fin", -1)
+        editor?.apply()
     }
 }

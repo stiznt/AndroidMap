@@ -102,6 +102,7 @@ class PosFragment : Fragment() {
             status?.visibility = View.INVISIBLE
             saveState()
             deletePaths()
+            presenter?.setFin()
         })
 
         finishMarker = AppCompatImageView(this.requireContext()).apply {
@@ -123,7 +124,7 @@ class PosFragment : Fragment() {
         val sPref: SharedPreferences
         sPref = requireActivity().getPreferences(MODE_PRIVATE)
 
-        if (sPref.getInt("MY_POS", 33) == sPref.getInt("FINISH", 1)) {
+        if (sPref.getInt("MY_POS", 33) == sPref.getInt("FINISH", 32)) {
             Toast.makeText(context, "Вы пришли в конечный пункт", Toast.LENGTH_LONG).show()
             navHelper?.visibility = View.INVISIBLE
             progressBar?.visibility = View.INVISIBLE
@@ -152,7 +153,7 @@ class PosFragment : Fragment() {
             dist_min?.visibility = View.VISIBLE
             reset_path?.visibility = View.VISIBLE
 
-            presenter?.updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 1))
+            presenter?.updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 32))
 
             var travel_time = presenter?.getCurDist()?.div(67) //67 метров в минуту
             var time1: LocalTime? = travel_time?.toLong()?.let { LocalTime.now().plusMinutes(it) }
