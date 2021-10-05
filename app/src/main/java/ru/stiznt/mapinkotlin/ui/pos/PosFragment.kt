@@ -1,5 +1,6 @@
 package ru.stiznt.mapinkotlin.ui.pos
 
+import android.annotation.TargetApi
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
@@ -7,6 +8,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.speech.tts.TextToSpeech.OnInitListener
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +27,11 @@ import ru.stiznt.mapinkotlin.Models.Cabinet
 import ru.stiznt.mapinkotlin.R
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.HashMap
+import android.widget.Toast
+import android.widget.EditText
+import ru.stiznt.mapinkotlin.MainActivity
 
 class PosFragment : Fragment() {
 
@@ -49,6 +57,11 @@ class PosFragment : Fragment() {
 
     private var finishMarker: AppCompatImageView? = null
     private var positionMarker: AppCompatImageView? = null
+
+    var locale = Locale("ru-Ru")
+
+    private var tts: TextToSpeech? = null
+    var ttsEnabled = false
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -113,6 +126,23 @@ class PosFragment : Fragment() {
             setImageResource(R.drawable.position_marker)
         }
 
+        tts = TextToSpeech(root?.context, OnInitListener { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                if (tts!!.isLanguageAvailable(Locale(Locale.getDefault().language))
+                    == TextToSpeech.LANG_AVAILABLE
+                ) {
+                    tts!!.language = locale //Установка языка
+                } else {
+                    tts!!.language = Locale.US
+                }
+                tts!!.setPitch(1f) //Не помню, но что-то связанное с речью
+                tts!!.setSpeechRate(0.5f) //Установка темпа речи
+                tts!!.voice = tts!!.defaultVoice //Установка голоса
+                ttsEnabled = true
+            } else if (status == TextToSpeech.ERROR) {
+                ttsEnabled = false
+            }
+        })
         showNavigation()
         return root
     }
@@ -122,10 +152,11 @@ class PosFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun showNavigation() {
         val sPref: SharedPreferences
+        speak("Вы пришли в конечный пункт")
         sPref = requireActivity().getPreferences(MODE_PRIVATE)
-
-        if (sPref.getInt("MY_POS", 33) == sPref.getInt("FINISH", 32)) {
-            Toast.makeText(context, "Вы пришли в конечный пункт", Toast.LENGTH_LONG).show()
+        if (sPref.getInt("MY_POS", -1) == sPref.getInt("FINISH", 32)) {
+            //Toast.makeText(context, "Вы пришли в конечный пункт", Toast.LENGTH_LONG).show()
+            speak("Вы пришли в конечный пункт")
             navHelper?.visibility = View.INVISIBLE
             progressBar?.visibility = View.INVISIBLE
             progressView?.visibility = View.INVISIBLE
@@ -142,7 +173,7 @@ class PosFragment : Fragment() {
         val position = root!!.findViewById<View>(R.id.position) as TextView
         var pos = sPref.getString("position", "")
 
-        if (pos?.length!! > 2) {
+        if (pos?.length!! > 2 && (sPref.getInt("MY_POS", -1) != -1) ) {
             progressView?.visibility = View.VISIBLE
             progressBar?.visibility = View.VISIBLE
 
@@ -152,7 +183,7 @@ class PosFragment : Fragment() {
             dist_time?.visibility = View.VISIBLE
             dist_min?.visibility = View.VISIBLE
             reset_path?.visibility = View.VISIBLE
-
+            speak("Маршрут построен")
             presenter?.updatePath(sPref.getInt("MY_POS", 33), sPref.getInt("FINISH", 32))
 
             var travel_time = presenter?.getCurDist()?.div(67) //67 метров в минуту
@@ -172,8 +203,10 @@ class PosFragment : Fragment() {
                 dist_progress?.text = presenter?.getDistMetr().toString() + "м"
                 remained_path?.text = presenter?.getCurDist().toString() + "м"
             }
-            if (presenter?.getStatus() == false)
+            if (presenter?.getStatus() == false){
                 status?.visibility = View.VISIBLE
+                speak("Вы ушли с маршрута")
+            }
             else
                 status?.visibility = View.INVISIBLE
 
@@ -252,6 +285,28 @@ class PosFragment : Fragment() {
         //mapView?.removeMarker(positionMarker!!)
         mapView?.removePathView(pathView!!)
         pathView = PathView(mapView!!.context)
+    }
+
+
+    fun speak(text: String) {
+        if (!ttsEnabled) return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ttsGreater21(text)
+        } else {
+            ttsUnder20(text)
+        }
+    }
+
+    private fun ttsUnder20(text: String) {
+        val map: HashMap<String, String> = HashMap()
+        map[TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID] = "MessageId"
+        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, map)
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun ttsGreater21(text: String) {
+        val utteranceId = this.hashCode().toString() + " "
+        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
     }
 
 }
